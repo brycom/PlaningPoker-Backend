@@ -1,2 +1,0 @@
-# PlaningPoker-Backend
-PlaningPoker-Backend

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Users")
 public class User {
-    
+
     @Id
     private String id;
     private String userName;
@@ -15,7 +15,7 @@ public class User {
     private String lastName;
     private String password;
     private String email;
-    private Set <Role> role;
+    private Set<Role> role;
 
     public User(String id, String userName, String firstName, String lastName, String password, String email,
             Set<Role> role) {
@@ -83,7 +83,5 @@ public class User {
     public void setRole(Set<Role> role) {
         this.role = role;
     }
-    
 
-    
 }

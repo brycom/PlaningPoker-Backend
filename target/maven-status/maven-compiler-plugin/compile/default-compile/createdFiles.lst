@@ -1,0 +1,8 @@
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Models\User.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Security\SecurityConfig.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Models\Role.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\PlaningPokerG2BackendApplication.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\testController.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Models\Project.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Models\Issues.class
+com\PlaningPokerG2Backend\PlaningPokerG2Backend\Models\Vote.class

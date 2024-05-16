@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.PlaningPokerG2Backend.PlaningPokerG2Backend.PlaningPokerG2BackendApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.165 s -- in com.PlaningPokerG2Backend.PlaningPokerG2Backend.PlaningPokerG2BackendApplicationTests

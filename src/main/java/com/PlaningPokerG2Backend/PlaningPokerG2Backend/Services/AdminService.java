@@ -33,4 +33,8 @@ public class AdminService {
         role.setId(id);
         return mongoOperations.save(role);
     }
+
+    public User addUser(User user) {
+        return mongoOperations.insert(user);
+    }
 }

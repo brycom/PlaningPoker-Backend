@@ -33,8 +33,13 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        try {
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.ok(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @PutMapping("/{id}")
@@ -47,9 +52,54 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> patchUser(@PathVariable String id, @RequestBody User user) {
+        Optional<User> existingUserOpt = userService.getUserById(id);
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+            if (user.getUserName() != null) {
+                existingUser.setUserName(user.getUserName());
+            }
+            if (user.getFirstName() != null) {
+                existingUser.setFirstName(user.getFirstName());
+            }
+            if (user.getLastName() != null) {
+                existingUser.setLastName(user.getLastName());
+            }
+            if (user.getPassword() != null) {
+                existingUser.setPassword(user.getPassword());
+            }
+            if (user.getEmail() != null) {
+                existingUser.setEmail(user.getEmail());
+            }
+            if (user.getRole() != null) {
+                existingUser.setRole(user.getRole());
+            }
+            userService.updateUser(id, existingUser);
+            return ResponseEntity.ok(existingUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }
+
+
+// {
+//     "userName": "testusername",
+//     "firstName": "Testfirstname",
+//     "lastName": "testlastname",
+//     "password": "12345",
+//     "email": "test@example.com",
+//     "role": [
+//         {
+//             "id": 1,
+//             "authority": "ROLE_USER"
+//         }
+//     ]
+// }

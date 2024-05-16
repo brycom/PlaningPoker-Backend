@@ -21,12 +21,16 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        if (user.getId() == null || user.getId().isEmpty()) {
+            user.setId(UUID.randomUUID().toString());
+        }
         userStore.put(user.getId(), user);
         return user;
     }
 
     public User updateUser(String id, User user) {
         if (userStore.containsKey(id)) {
+            user.setId(id);
             userStore.put(id, user);
             return user;
         } else {

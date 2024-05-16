@@ -1,4 +1,4 @@
-package com.PlaningPokerG2Backend.PlaningPokerG2Backend;
+package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

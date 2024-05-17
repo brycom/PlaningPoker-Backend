@@ -1,4 +1,6 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,9 +17,11 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 public class ProjectService {
     private final MongoOperations mongoOperations;
 
+
     public ProjectService(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
+
 
     public Project getProjectById(String id) {
         Query query = new Query();
@@ -47,5 +51,6 @@ public class ProjectService {
         mongoOperations.updateFirst(query, update, Project.class);
         return mongoOperations.findById(id, Project.class);
     }
+
     
 }

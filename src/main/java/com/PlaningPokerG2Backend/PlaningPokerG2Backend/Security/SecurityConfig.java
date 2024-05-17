@@ -27,7 +27,7 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/auth/**").permitAll()  // Tillåt åtkomst till autentiserings- och registreringsendpoints
-                .requestMatchers("/users/**").permitAll()  // Tillåt tillfällig åtkomst till användarendpoints
+                .requestMatchers("/users/**").hasRole("ADMIN")  // Endast administratörer kan hantera användare
                 .anyRequest().authenticated()  // Alla andra endpoints kräver autentisering
             )
             .sessionManagement(session -> session

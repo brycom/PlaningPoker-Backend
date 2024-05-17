@@ -1,7 +1,6 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
 import java.util.Collection;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

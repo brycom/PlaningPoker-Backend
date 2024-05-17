@@ -56,7 +56,7 @@ public class IssuesController {
     }
     @GetMapping("/issues")
     public ResponseEntity<List<Issues>> getIssues() {
-        List<Issues> issues = projectService.getIssues();
+        List<Issues> issues = issuesService.getIssues();
         return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 

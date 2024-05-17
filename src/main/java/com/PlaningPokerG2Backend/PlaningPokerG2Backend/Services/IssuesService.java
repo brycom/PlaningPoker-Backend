@@ -1,6 +1,7 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -33,6 +34,9 @@ public class IssuesService {
             throw new Exception("Issuename finns redan");
         }
         return mongoOperations.insert(issues);
+    }
+      public List<Issues> getIssues(){
+        return mongoOperations.findAll(Issues.class);
     }
     public Issues getIssueById(UUID id) {
         Query query = new Query(Criteria.where("id").is(id));

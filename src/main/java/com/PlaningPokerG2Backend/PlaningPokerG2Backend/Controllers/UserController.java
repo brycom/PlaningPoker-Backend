@@ -11,7 +11,7 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -88,18 +88,3 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-// {
-//     "userName": "testusername",
-//     "firstName": "Testfirstname",
-//     "lastName": "testlastname",
-//     "password": "12345",
-//     "email": "test@example.com",
-//     "role": [
-//         {
-//             "id": 1,
-//             "authority": "ROLE_USER"
-//         }
-//     ]
-// }

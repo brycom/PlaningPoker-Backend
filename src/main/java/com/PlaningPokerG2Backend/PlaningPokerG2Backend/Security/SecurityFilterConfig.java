@@ -16,12 +16,13 @@ public class SecurityFilterConfig {
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-        return http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/auth/**").permitAll();
-            auth.requestMatchers("/admin/**", "/role/**").permitAll();
-            auth.requestMatchers("/user/**", "/project/**", "/issue/**", "/statistics/**").permitAll();
-            auth.anyRequest().permitAll();
-        })
+        return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/admin/**", "/role/**").hasRole("admin");
+                    auth.requestMatchers("/users/**", "/project/**", "/issue/**", "/statistics/**").hasAnyRole("admin",
+                            "user");
+                })
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter)))

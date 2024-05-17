@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.DTOs.UserDTO;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.UserService;
 
 @RestController
@@ -17,13 +18,15 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
+    public /* ResponseEntity<User> */ UserDTO getUserById(@PathVariable String id) {
+        /*         System.out.println(id);
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
             return ResponseEntity.notFound().build();
-        }
+        } */
+        return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
@@ -38,11 +41,11 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<User> patchUser(@PathVariable String id, @RequestBody User user) {
-        Optional<User> existingUserOpt = userService.getUserById(id);
+        /*       Optional<User> existingUserOpt = userService.getUserById(id);
         if (existingUserOpt.isPresent()) {
             User existingUser = existingUserOpt.get();
-            if (user.getUserName() != null) {
-                existingUser.setUserName(user.getUserName());
+            if (user.getUsername() != null) {
+                existingUser.setUserName(user.getUsername());
             }
             if (user.getFirstName() != null) {
                 existingUser.setFirstName(user.getFirstName());
@@ -63,7 +66,8 @@ public class UserController {
             return ResponseEntity.ok(existingUser);
         } else {
             return ResponseEntity.notFound().build();
-        }
+        } */
+        return null;
     }
 
     @DeleteMapping("/{id}")

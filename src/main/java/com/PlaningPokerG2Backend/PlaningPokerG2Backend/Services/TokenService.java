@@ -10,7 +10,9 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TokenService {
 
     private JwtEncoder jwtEncoder;
@@ -25,7 +27,7 @@ public class TokenService {
     public String jwtGenerator(Authentication auth) {
 
         Instant now = Instant.now();
-        Instant expirationTime = now.plus(2, ChronoUnit.HOURS);
+        Instant expirationTime = now.plus(1, ChronoUnit.HOURS);
 
         String scope = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

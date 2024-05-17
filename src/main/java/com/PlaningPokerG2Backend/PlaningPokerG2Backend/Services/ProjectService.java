@@ -2,14 +2,10 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.stereotype.Service;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 

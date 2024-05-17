@@ -49,7 +49,7 @@ public class IssuesController {
             Issues newIssue = issuesService.addIssue(issue);
             return new ResponseEntity<>(newIssue, HttpStatus.CREATED);
         }catch (Exception ex) {
-            String errorMessage = "Issuename finns redan.";
+            String errorMessage = "Issuename finns redan!";
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         
         } 

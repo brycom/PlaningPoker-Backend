@@ -1,8 +1,10 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,14 +53,26 @@ public class ProjectController {
         return projectService.editProjects(id, project);
     }
 
-    public Project addUserToProject() {
-        //invite kanppen, detta ska lägga till användare i projectet
-        //lägg till ett strängat id till userids i projects
-        return null;
+    @PostMapping("/projects/addUser")
+    public ResponseEntity<Project> addUserToProject(@RequestBody Map<String, String> requestData) {
+    String projectId = requestData.get("projectId");
+    String userId = requestData.get("userId");
+    Project updatedProject = projectService.addUserToProject(projectId, userId);
+    if (updatedProject == null) {
+        return ResponseEntity.notFound().build();
     }
-    public Project deleteUserAccess() {
-        //Detta är att detta ska ta bort en användare från projectet. 
-        return null;
+    return ResponseEntity.ok(updatedProject);
+}
+
+   @DeleteMapping("/projects/deleteUser")
+    public ResponseEntity<Project> deleteUserFromProject(@RequestBody Map<String, String> requestData) {
+        String projectId = requestData.get("projectId");
+        String userId = requestData.get("userId");
+        Project updatedProject = projectService.deleteUserFromProject(projectId, userId);
+        if (updatedProject == null) {
+            return ResponseEntity.notFound().build();  // Om projektet inte hittas eller operationen misslyckas
+        }
+        return ResponseEntity.ok(updatedProject);  // Returnerar det uppdaterade projektet med status 200 OK
     }
     
 }

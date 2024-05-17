@@ -32,6 +32,9 @@ public class ProjectService {
 
     public List <Project> getProjects() {
         return mongoOperations.findAll(Project.class);
+
+        //Behöver kollas över när vi ändrar projectId och userId
+        //denna ska endast lista de projekt som finns under en user
     }
 
     public Project createProjects(Project project) {
@@ -50,6 +53,25 @@ public class ProjectService {
 
         mongoOperations.updateFirst(query, update, Project.class);
         return mongoOperations.findById(id, Project.class);
+    }
+
+    public Project addUserToProject(String projectId, String userId) {
+        Query query = new Query(Criteria.where("ProjectId").is(projectId));
+        Update update = new Update().addToSet("userIds", userId);
+        mongoOperations.updateFirst(query, update, Project.class); 
+
+        return mongoOperations.findAndModify(query, update, Project.class);
+
+        //Behöver kollas över när vi ändrar projectId och userId
+    }
+
+    public Project deleteUserFromProject(String projectId, String userId) {
+        Query query = new Query(Criteria.where("id").is(projectId));
+        Update update = new Update().pull("userIds", userId);  // Tar bort användar-ID från listan
+        mongoOperations.updateFirst(query, update, Project.class);  // Uppdaterar projektet
+        return mongoOperations.findById(projectId, Project.class);  // Returnerar det uppdaterade projektet
+
+        //Behöver kollas över när vi ändrar projectId och userId
     }
 
     

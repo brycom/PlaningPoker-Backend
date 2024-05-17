@@ -1,13 +1,12 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
-import java.util.Set;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.Set;
 
 @Document(collection = "Users")
 public class User {
-    
+
     @Id
     private String id;
     private String userName;
@@ -15,11 +14,11 @@ public class User {
     private String lastName;
     private String password;
     private String email;
-    private Set <Role> role;
+    private Set<Role> role;
 
-    public User(String id, String userName, String firstName, String lastName, String password, String email,
-            Set<Role> role) {
-        this.id = id;
+    public User() {}
+
+    public User(String userName, String firstName, String lastName, String password, String email, Set<Role> role) {
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -83,7 +82,4 @@ public class User {
     public void setRole(Set<Role> role) {
         this.role = role;
     }
-    
-
-    
 }

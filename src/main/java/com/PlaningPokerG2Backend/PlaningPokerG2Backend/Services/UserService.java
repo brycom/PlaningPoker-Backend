@@ -1,7 +1,7 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,36 +9,43 @@ import org.springframework.stereotype.Service;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Repositories.UserRepository;
 
-// repo
+// 
 @Service
 public class UserService {
+
+    private final Map<String, User> userStore = new ConcurrentHashMap<>();
 
     @Autowired
     private UserRepository userRepository;
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return new ArrayList<>(userStore.values());
     }
 
     public Optional<User> getUserById(String id) {
-        return userRepository.findById(id);
+        return Optional.ofNullable(userStore.get(id));
     }
 
     public User createUser(User user) {
-        return userRepository.save(user);
+        if (user.getId() == null || user.getId().isEmpty()) {
+            user.setId(UUID.randomUUID().toString());
+        }
+        userStore.put(user.getId(), user);
+        return user;
     }
 
     public User updateUser(String id, User user) {
-        if (userRepository.existsById(id)) {
+        if (userStore.containsKey(id)) {
             user.setId(id);
-            return userRepository.save(user);
+            userStore.put(id, user);
+            return user;
         } else {
             return null;
         }
     }
 
     public void deleteUser(String id) {
-        userRepository.deleteById(id);
+        userStore.remove(id);
     }
 
     public boolean existsByUserName(String userName) {

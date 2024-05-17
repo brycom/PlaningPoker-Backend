@@ -1,11 +1,9 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
@@ -18,14 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    @Secured("ROLE_ADMIN")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
     @GetMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
@@ -35,19 +26,7 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    @Secured("ROLE_ADMIN")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User createdUser = userService.createUser(user);
-            return ResponseEntity.ok(createdUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
     @PutMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
         User updatedUser = userService.updateUser(id, user);
         if (updatedUser != null) {
@@ -58,7 +37,6 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<User> patchUser(@PathVariable String id, @RequestBody User user) {
         Optional<User> existingUserOpt = userService.getUserById(id);
         if (existingUserOpt.isPresent()) {
@@ -89,7 +67,6 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();

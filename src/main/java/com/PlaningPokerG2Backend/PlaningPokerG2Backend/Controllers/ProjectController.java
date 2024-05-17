@@ -52,11 +52,12 @@ public class ProjectController {
     }
 
     public Project addUserToProject() {
-        
+        //invite kanppen, detta ska lägga till användare i projectet
+        //lägg till ett strängat id till userids i projects
         return null;
     }
     public Project deleteUserAccess() {
-        
+        //Detta är att detta ska ta bort en användare från projectet. 
         return null;
     }
     

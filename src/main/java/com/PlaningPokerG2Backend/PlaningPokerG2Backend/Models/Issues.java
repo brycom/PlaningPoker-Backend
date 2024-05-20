@@ -1,18 +1,16 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 
-
 public class Issues {
     @Id
-    private UUID id;
-    private String issueName;
-    private List <Vote> votes;
+    private UUID issueId;
+    private String issuename;
+    private List<Vote> votes;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private float estimatedTime;
@@ -20,8 +18,8 @@ public class Issues {
 
     public Issues(String issueName, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
-        this.id = UUID.randomUUID();
-        this.issueName = issueName;
+        this.issueId = UUID.randomUUID();
+        this.issuename = issueName;
         this.votes = votes;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -29,50 +27,60 @@ public class Issues {
         this.actualTime = actualTime;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getIssueId() {
+        return issueId;
     }
-    public void setId(UUID id) {
-        this.id = id;
+
+    public void setIssueId(UUID issueId) {
+        this.issueId = issueId;
     }
-    public String getIssueName() {
-        return issueName;
+
+    public String getIssuename() {
+        return issuename;
     }
-    public void setIssueName(String issueName) {
-        this.issueName = issueName;
+
+    public void setIssuename(String issuename) {
+        this.issuename = issuename;
     }
+
     public List<Vote> getVotes() {
         return votes;
     }
+
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
+
     public LocalDateTime getStartTime() {
         return startTime;
     }
+
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
     public LocalDateTime getEndTime() {
         return endTime;
     }
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
     public float getEstimatedTime() {
         return estimatedTime;
     }
+
     public void setEstimatedTime(float estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
+
     public String getActualTime() {
         return actualTime;
     }
+
     public void setActualTime(String actualTime) {
         this.actualTime = actualTime;
     }
-
-    
-
 
 }

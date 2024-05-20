@@ -13,7 +13,7 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    private String id;
+    private String userId;
     private String username;
     private String firstName;
     private String lastName;
@@ -36,12 +36,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String userId) {
+        this.userId = userId;
     }
 
     public void setUserName(String username) {
@@ -84,8 +84,28 @@ public class User implements UserDetails {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void addRole(Role role) {
+        if (role != null) {
+            this.role.add(role);
+        } else {
+            throw new IllegalArgumentException("Kan inte lägga till rollen");
+        }
+    }
+
+    public void removeRole(Role role) {
+        if (this.role.size() > 1) {
+            this.role.remove(role);
+        } else {
+            throw new IllegalStateException("Kan inte ta bort rollen");
+        }
+    }
+
+    public void switchRole(Role role) {
+        Object[] roles = this.role.toArray();
+        Role oldRole = (Role) roles[0];
+        this.role.add(role);
+        this.role.remove(oldRole);
+
     }
 
     @Override

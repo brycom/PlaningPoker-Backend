@@ -1,7 +1,5 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +10,22 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.UserService;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/{id}")
-    public /* ResponseEntity<User> */ UserDTO getUserById(@PathVariable String id) {
-        /*         System.out.println(id);
-        Optional<User> user = userService.getUserById(id);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
+
+        UserDTO user = userService.getUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();
-        } */
-        return userService.getUserById(id);
+        }
+
     }
 
     @PutMapping("/{id}")

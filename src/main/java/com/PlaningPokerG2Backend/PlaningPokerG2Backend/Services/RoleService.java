@@ -1,7 +1,6 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
 import java.util.List;
-
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
@@ -87,14 +86,18 @@ public class RoleService {
 
     public String deleteRole(String roleId, String userId) {
         User user = mongoOperations.findById(userId, User.class);
-        Role newRole = mongoOperations.findById(roleId, Role.class);
-        user.removeRole(newRole);
-        if (!user.getRole().contains(newRole)) {
-            mongoOperations.save(user);
-            return "Rollen: " + newRole.getAuthority() + " är borttagen från användare:" + user.getUsername();
-        } else {
-            throw new RuntimeException("Rollen: " + newRole.getAuthority() + " kunde inte tas bort");
+        Role oldRole = mongoOperations.findById(roleId, Role.class);
+        if (user == null) {
+            throw new IllegalArgumentException("Användaren kunde inte hittas");
         }
+        if (oldRole == null) {
+            throw new IllegalArgumentException("Rollen kunde inte hittas");
+        }
+        user.removeRole(oldRole);
+
+        mongoOperations.save(user);
+        return "Rollen: " + oldRole.getAuthority() + " är borttagen från användare:" + user.getUsername();
+
     }
 
 }

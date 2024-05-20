@@ -22,6 +22,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    //General roles
     @GetMapping("/")
     public Iterable<Role> getAllRoles() {
         return roleService.getRoles();
@@ -38,6 +39,16 @@ public class RoleController {
         }
     }
 
+    @DeleteMapping("/{roleId}")
+    public ResponseEntity<String> deleteRole(@PathVariable String roleId, @PathVariable String userId) {
+        try {
+            return ResponseEntity.ok(roleService.deleteRole(roleId, userId));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Roles for users
     @PostMapping("/add/{userId}/{roleId}")
     public ResponseEntity<String> addRole(@PathVariable String roleId, @PathVariable String userId) {
         try {
@@ -58,10 +69,10 @@ public class RoleController {
     }
 
     @DeleteMapping("/{userId}/{roleId}")
-    public ResponseEntity<String> deleteRole(@PathVariable String roleId, @PathVariable String userId) {
+    public ResponseEntity<String> deleteRoleFromUser(@PathVariable String roleId, @PathVariable String userId) {
         try {
             return ResponseEntity.ok(roleService.deleteRole(roleId, userId));
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

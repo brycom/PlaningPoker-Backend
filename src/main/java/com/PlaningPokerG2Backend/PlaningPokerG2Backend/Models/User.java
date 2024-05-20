@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+
 import java.util.Set;
 
 @Document(collection = "Users")
@@ -85,18 +86,26 @@ public class User implements UserDetails {
     }
 
     public void addRole(Role role) {
-        if (role != null) {
-            this.role.add(role);
-        } else {
-            throw new IllegalArgumentException("Kan inte lägga till rollen");
-        }
+        this.role.add(role);
     }
 
     public void removeRole(Role role) {
+        boolean removed = false;
+        System.out.println(this.role.size());
         if (this.role.size() > 1) {
-            this.role.remove(role);
+            for (Role r : this.role) {
+                if (r.getAuthority().equals(role.getAuthority())) {
+                    this.role.remove(r);
+                    removed = true;
+
+                }
+            }
+            if (!removed) {
+                throw new IllegalStateException("ingen roll med det id't på denna användaren");
+            }
         } else {
-            throw new IllegalStateException("Kan inte ta bort rollen");
+
+            throw new IllegalStateException("Denna användaren har bara en roll");
         }
     }
 

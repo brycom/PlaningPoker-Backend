@@ -2,7 +2,6 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
 import java.util.List;
 
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,44 +16,39 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Role;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.AdminService;
 
-
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-    
+
     private AdminService adminService;
 
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
-    
+
     @GetMapping("/users")
     public List<User> getUsers() {
         return adminService.getUsers();
     }
 
-    @GetMapping("/projects") 
+    @GetMapping("/projects")
     public List<Project> getProjects() {
         return adminService.getProjects();
     }
 
-    
-    
     @GetMapping("/issues")
     public List<Issues> getIssues() {
         return adminService.getIssues();
     }
 
-    
-    @PatchMapping("/role/{id}") 
-        public Role editRole(@PathVariable int id, @RequestBody Role role) {
-            return adminService.editRole(id, role);
-        }
-
+    @PatchMapping("/role/{userId}/{roleId}")
+    public String editRole(@PathVariable int roleId, @PathVariable String userId) {
+        return adminService.editRole(roleId, userId);
+    }
 
     @PostMapping("/user")
     public User addUser(@RequestBody User user) {
         return adminService.addUser(user);
     }
-    
+
 }

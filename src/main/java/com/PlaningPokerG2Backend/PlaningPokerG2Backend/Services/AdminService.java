@@ -17,7 +17,7 @@ public class AdminService {
     public AdminService(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
-    
+
     public List<User> getUsers() {
         return mongoOperations.findAll(User.class);
     }
@@ -25,13 +25,17 @@ public class AdminService {
     public List<Project> getProjects() {
         return mongoOperations.findAll(Project.class);
     }
+
     public List<Issues> getIssues() {
         return mongoOperations.findAll(Issues.class);
     }
 
-    public Role editRole(int id, Role role) {
-        role.setId(id);
-        return mongoOperations.save(role);
+    public String editRole(int roleId, String userID) {
+        User user = mongoOperations.findById(userID, User.class);
+        Role newRole = mongoOperations.findById(roleId, Role.class);
+        mongoOperations.save(user);
+
+        return "Din nya rol är: " + newRole.getAuthority();
     }
 
     public User addUser(User user) {

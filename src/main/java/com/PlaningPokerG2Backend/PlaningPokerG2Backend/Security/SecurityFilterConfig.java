@@ -18,7 +18,7 @@ public class SecurityFilterConfig {
 
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/**").permitAll();
                     auth.requestMatchers("/admin/**", "/role/**").hasRole("admin");
                     auth.requestMatchers("/users/**", "/project/**", "/issue/**", "/statistics/**").hasAnyRole("admin",
                             "user");

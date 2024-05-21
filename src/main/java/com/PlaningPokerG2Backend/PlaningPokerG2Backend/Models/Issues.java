@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 
 public class Issues {
     @Id
-    private UUID id;
+    private String id;
     private String issueName;
     private List <Vote> votes;
     private LocalDateTime startTime;
@@ -20,7 +20,7 @@ public class Issues {
 
     public Issues(String issueName, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.issueName = issueName;
         this.votes = votes;
         this.startTime = startTime;
@@ -29,10 +29,10 @@ public class Issues {
         this.actualTime = actualTime;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getIssueName() {

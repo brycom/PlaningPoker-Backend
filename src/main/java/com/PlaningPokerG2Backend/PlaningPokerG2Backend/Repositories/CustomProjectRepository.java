@@ -1,19 +1,17 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Repositories;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Vote;
-
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.ProjectService;
 
 import java.util.List;
-
 
 @Repository
 public class CustomProjectRepository {
@@ -21,30 +19,66 @@ public class CustomProjectRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public CustomProjectRepository(MongoOperations mongoOperations) {
-        this.mongoOperations = mongoOperations;
-    }
+    @Autowired
+    private ProjectService projectService;
 
     public List<Vote> findVotesByIssueId(String projectId, String issueId) {
-        System.out.println("proj: " + projectId);
-        System.out.println("issue: " + issueId);
+        System.out.println("Project ID: " + projectId);
+        System.out.println("Issue ID: " + issueId);
 
         Query query = new Query(Criteria.where("id").is(projectId));
 
+        System.out.println("query: " + query);
+
         Project project = mongoOperations.findOne(query, Project.class);
-        System.out.println("project: " + project);
-        if (project != null && project.getIssues() != null && !project.getIssues().isEmpty()) {
-            return project.getIssues().get(0).getVotes();
+
+        if (project == null) {
+            System.out.println("Project not found");
+            return null;
         }
-        System.out.println("Null!");
+
+        List<Issues> allIssues = project.getIssues();
+        System.out.println("allIssues" + allIssues);
+
+        for (Issues issue : allIssues) {
+            if (issue.getId().equals(issueId)) {
+
+                return issue.getVotes();
+            }
+        }
+
+        System.out.println("Issue not found");
         return null;
     }
 
-    public Project getProjectById(String id) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(id));
-
-        return mongoOperations.findOne(query, Project.class);
+    public Vote addUserVote(Vote vote, String projectId, String issueId) {
+        
+        Query query = new Query(Criteria.where("id").is(projectId));
+        Project project = mongoOperations.findOne(query, Project.class);
+    
+        if (project == null) {
+            System.out.println("Project not found");
+            return null;
+        }
+    
+        List<Issues> allIssues = project.getIssues();
+        System.out.println("allIssues: " + allIssues);
+    
+        
+        for (Issues issue : allIssues) {
+            if (issue.getId().equals(issueId)) {
+                
+                issue.getVotes().add(vote);
+    
+                
+                mongoOperations.save(project);
+                return vote;
+            }
+        }
+    
+        System.out.println("Issue not found");
+        return null;
     }
+    
 
 }

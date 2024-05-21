@@ -55,7 +55,7 @@ public class ProjectController {
 
     @PostMapping("/projects/addUser")
     public ResponseEntity<Project> addUserToProject(@RequestBody Map<String, String> requestData) {
-        String projectId = requestData.get("projectId");
+        String projectId = requestData.get("projektId");
         String userId = requestData.get("userId");
         Project updatedProject = projectService.addUserToProject(projectId, userId);
         if (updatedProject == null) {
@@ -66,7 +66,7 @@ public class ProjectController {
 
     @DeleteMapping("/projects/deleteUser")
     public ResponseEntity<Project> deleteUserFromProject(@RequestBody Map<String, String> requestData) {
-        String projectId = requestData.get("projectId");
+        String projectId = requestData.get("projektId");
         String userId = requestData.get("userId");
         Project updatedProject = projectService.deleteUserFromProject(projectId, userId);
         if (updatedProject == null) {

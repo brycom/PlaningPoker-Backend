@@ -50,8 +50,8 @@ public class ProjectService {
         return mongoOperations.findById(projektId, Project.class);
     }
 
-    public Project addUserToProject(String projectId, String userId) {
-        Query query = new Query(Criteria.where("ProjectId").is(projectId));
+    public Project addUserToProject(String projektId, String userId) {
+        Query query = new Query(Criteria.where("ProjektId").is(projektId));
         Update update = new Update().addToSet("userIds", userId);
         mongoOperations.updateFirst(query, update, Project.class);
 
@@ -60,11 +60,11 @@ public class ProjectService {
         //Behöver kollas över när vi ändrar projectId och userId
     }
 
-    public Project deleteUserFromProject(String projectId, String userId) {
-        Query query = new Query(Criteria.where("projectId").is(projectId));
+    public Project deleteUserFromProject(String projektId, String userId) {
+        Query query = new Query(Criteria.where("projektId").is(projektId));
         Update update = new Update().pull("userIds", userId); // Tar bort användar-ID från listan
         mongoOperations.updateFirst(query, update, Project.class); // Uppdaterar projektet
-        return mongoOperations.findById(projectId, Project.class); // Returnerar det uppdaterade projektet
+        return mongoOperations.findById(projektId, Project.class); // Returnerar det uppdaterade projektet
 
         //Behöver kollas över när vi ändrar projectId och userId
     }

@@ -2,12 +2,15 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 
 @Service
 public class ProjectService {
@@ -68,5 +71,15 @@ public class ProjectService {
 
         //Behöver kollas över när vi ändrar projectId och userId
     }
+
+    public List<User> getUsersInProject(String projektId) {
+    Query query = new Query(Criteria.where("projektId").is(projektId));
+    Project project = mongoOperations.findOne(query, Project.class);
+    if (project != null && project.getUserIds() != null) {
+        Query userQuery = new Query(Criteria.where("userId").in(project.getUserIds()));
+        return mongoOperations.find(userQuery, User.class);
+    }
+    return new ArrayList<>();  
+}
 
 }

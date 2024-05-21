@@ -91,7 +91,6 @@ public class User implements UserDetails {
 
     public void removeRole(Role role) {
         boolean removed = false;
-        System.out.println(this.role.size());
         if (this.role.size() > 1) {
             for (Role r : this.role) {
                 if (r.getAuthority().equals(role.getAuthority())) {

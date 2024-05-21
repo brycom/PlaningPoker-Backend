@@ -7,13 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+
 import java.util.Set;
 
 @Document(collection = "Users")
 public class User implements UserDetails {
 
     @Id
-    private String id;
+    private String userId;
     private String username;
     private String firstName;
     private String lastName;
@@ -36,12 +37,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String userId) {
+        this.userId = userId;
     }
 
     public void setUserName(String username) {
@@ -84,8 +85,35 @@ public class User implements UserDetails {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void addRole(Role role) {
+        this.role.add(role);
+    }
+
+    public void removeRole(Role role) {
+        boolean removed = false;
+        if (this.role.size() > 1) {
+            for (Role r : this.role) {
+                if (r.getAuthority().equals(role.getAuthority())) {
+                    this.role.remove(r);
+                    removed = true;
+
+                }
+            }
+            if (!removed) {
+                throw new IllegalStateException("ingen roll med det id't på denna användaren");
+            }
+        } else {
+
+            throw new IllegalStateException("Denna användaren har bara en roll");
+        }
+    }
+
+    public void switchRole(Role role) {
+        Object[] roles = this.role.toArray();
+        Role oldRole = (Role) roles[0];
+        this.role.add(role);
+        this.role.remove(oldRole);
+
     }
 
     @Override

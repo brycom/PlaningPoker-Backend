@@ -9,14 +9,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
-//import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Repositories.UserRepository;
+
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.DTOs.UserDTO;
 
-// 
 @Service
 public class UserService implements UserDetailsService {
     private MongoOperations mongoOperations;
@@ -27,26 +26,15 @@ public class UserService implements UserDetailsService {
 
     }
 
-    /*   @Autowired
-    private UserRepository userRepository; */
-
-    /*     public List<User> getAllUsers() {
-        return new ArrayList<>(userStore.values());
-    } */
-
-    public /* Optional<User>  */UserDTO getUserById(String id) {
-        /* return Optional.ofNullable(userStore.get(id)); */
+    public UserDTO getUserById(String id) {
         User user = mongoOperations.findById(id, User.class);
-        return new UserDTO(user.getUsername(), user.getFirstName(), user.getId());
-    }
+        if (user == null) {
+            return null;
 
-    /*     public User createUser(User user) {
-        if (user.getId() == null || user.getId().isEmpty()) {
-            user.setId(UUID.randomUUID().toString());
+        } else {
+            return convertToUserDTO(user);
         }
-        userStore.put(user.getId(), user);
-        return user;
-    } */
+    }
 
     public User updateUser(String id, User user) {
         if (userStore.containsKey(id)) {
@@ -72,7 +60,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    /*     public boolean existsByUserName(String userName) {
-        return userRepository.findByUserName(userName).isPresent();
-    } */
+    private UserDTO convertToUserDTO(User user) {
+        return new UserDTO(user.getUsername(), user.getFirstName(), user.getUserId());
+    }
 }

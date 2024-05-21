@@ -8,35 +8,34 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Projects")
 public class Project {
     @Id
-    private String id;
-    private String projectName;
-    private List <String> userIds;
-    private List <Issues> issues;
+    private String projektId;
+    private String projectname;
+    private List<String> userIds;
+    private List<Issues> issues;
     private boolean active;
-    
-    public Project(String id, String projectName, List<String> userIds, List<Issues> issues, boolean active) {
-        this.id = id;
-        this.projectName = projectName;
+
+    public Project(String projektId, String projectname, List<String> userIds, List<Issues> issues, boolean active) {
+        this.projektId = projektId;
+        this.projectname = projectname;
         this.userIds = userIds;
         this.issues = issues;
         this.active = active;
     }
 
-
-    public String getId() {
-        return id;
+    public String getProjektId() {
+        return projektId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setProjektId(String projektId) {
+        this.projektId = projektId;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getProjectname() {
+        return projectname;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setProjectname(String projectname) {
+        this.projectname = projectname;
     }
 
     public List<String> getUserIds() {
@@ -55,15 +54,12 @@ public class Project {
         this.issues = issues;
     }
 
-
     public boolean isActive() {
         return active;
     }
-
 
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    
 }

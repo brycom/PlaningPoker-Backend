@@ -20,20 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.IssuesService;
-//import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.ProjectService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/issue")
+@CrossOrigin("*")
 public class IssuesController {
 
     private IssuesService issuesService;
-    //private ProjectService projectService;
 
     @Autowired
-    public IssuesController(IssuesService issuesService/* , ProjectService projectService */) {
+    public IssuesController(IssuesService issuesService) {
         this.issuesService = issuesService;
-        //this.projectService = projectService;
     }
 
     @PostMapping("/")
@@ -66,8 +63,8 @@ public class IssuesController {
             if (existingIssue == null) {
                 return ResponseEntity.notFound().build();
             }
-            if (issues.getIssueName() != null) {
-                existingIssue.setIssueName(issues.getIssueName());
+            if (issues.getIssuename() != null) {
+                existingIssue.setIssuename(issues.getIssuename());
             }
             Issues updatedIssue = issuesService.updateIssue(existingIssue);
             return ResponseEntity.ok(updatedIssue);
@@ -88,7 +85,7 @@ public class IssuesController {
         try {
             Issues closedIssue = issuesService.closeIssue(issueId);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Issue med namn:" + closedIssue.getIssueName() + " stängd.");
+                    .body("Issue med namn:" + closedIssue.getIssuename() + " stängd.");
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Stängning a issue misslyckades");
         }

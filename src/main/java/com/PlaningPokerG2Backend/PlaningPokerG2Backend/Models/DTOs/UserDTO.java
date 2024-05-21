@@ -11,6 +11,9 @@ public class UserDTO {
         this.userId = userId;
     }
 
+    public UserDTO() {
+    }
+
     public String getUsername() {
         return username;
     }

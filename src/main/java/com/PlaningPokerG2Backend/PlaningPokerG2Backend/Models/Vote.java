@@ -3,7 +3,9 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Vote {
     @Id
     private UUID voteId;
@@ -39,8 +41,4 @@ public class Vote {
     public void setVote(float vote) {
         this.vote = vote;
     }
-    
-
-    
-    
 }

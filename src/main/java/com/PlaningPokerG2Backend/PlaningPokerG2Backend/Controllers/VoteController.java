@@ -34,10 +34,6 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-
-
-
-
     @GetMapping("/votes/{projectId}/{issueId}")
     public List<Vote> getVotes(@PathVariable String projectId, @PathVariable String issueId) {
 
@@ -54,8 +50,8 @@ public class VoteController {
 
     // reset vote
     @DeleteMapping("/deleteVotes{projectId}/{issueId}")
-    public String deleteVotes(@PathVariable String projectId, @PathVariable String issueId) {
+    public String resetVotes(@PathVariable String projectId, @PathVariable String issueId) {
         
-        
+        return "delete";
     }
 }

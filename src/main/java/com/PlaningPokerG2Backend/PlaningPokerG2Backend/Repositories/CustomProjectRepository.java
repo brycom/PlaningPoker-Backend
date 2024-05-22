@@ -63,14 +63,10 @@ public class CustomProjectRepository {
     
         List<Issues> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
-    
-        
+       
         for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {
-                
-                issue.getVotes().add(vote);
-    
-                
+            if (issue.getId().equals(issueId)) {          
+                issue.getVotes().add(vote);      
                 mongoOperations.save(project);
                 return vote;
             }
@@ -80,5 +76,10 @@ public class CustomProjectRepository {
         return null;
     }
     
+    // public String resetVotes(String projectId, String issueId) {
 
+    //     Query query = new Query(Criteria.where("id").is(projectId));
+    //     Project project = mongoOperations.findOne(query, Project.class);
+
+    // }
 }

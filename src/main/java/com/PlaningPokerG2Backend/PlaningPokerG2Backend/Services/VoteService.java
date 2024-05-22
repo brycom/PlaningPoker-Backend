@@ -73,34 +73,34 @@ public class VoteService {
     }
 
     public String resetVotes(String projectId, String issueId) {
-        // Retrieve the project using the provided projectId
+        
         Project project = mongoOperations.findById(projectId, Project.class);
     
-        // Check if the project exists
+        
         if (project == null) {
             System.out.println("Project not found");
             return "Project not found";
         }
     
-        // Get the list of all issues in the project
+        
         List<Issues> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
     
-        // Iterate over the list of issues to find the specific issue
+        
         for (Issues issue : allIssues) {
             if (issue.getId().equals(issueId)) {
-                // Clear all votes for the found issue
+                
                 issue.getVotes().clear();
     
-                // Save the updated project back to the database
+                
                 mongoOperations.save(project);
     
-                // Return a success message
+                
                 return "Votes reset successfully";
             }
         }
     
-        // If the issue was not found, return an appropriate message
+        
         return "Issue not found";
     }
     

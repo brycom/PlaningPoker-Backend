@@ -1,6 +1,5 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class VoteController {
     private CustomProjectRepository customProjectRepository;
 
     private VoteService voteService;
-    
-
-    
 
     public VoteController(CustomProjectRepository customProjectRepository, VoteService voteService) {
         this.customProjectRepository = customProjectRepository;
@@ -42,20 +38,21 @@ public class VoteController {
         return votes;
     }
 
-    // add vote to issue with userId
     @PostMapping("/uservote/{projectId}/{issueId}")
     public Vote addUserVote(@RequestBody Vote vote, @PathVariable String projectId, @PathVariable String issueId) {
         voteService.addUserVote(vote, projectId, issueId);
         return vote;
     }
 
-    // reset vote
     @DeleteMapping("/deletevotes/{projectId}/{issueId}")
     public String resetVotes(@PathVariable String projectId, @PathVariable String issueId) {
-        
+
         return voteService.resetVotes(projectId, issueId);
     }
 
-    // Get vote with by userId reference
+    @GetMapping("/uservote/{projectId}/{issueId}/{userId}")
+    public Vote getUserVote(@PathVariable String projectId, @PathVariable String issueId, @PathVariable String userId) {
+        return voteService.getUserVote(projectId, issueId, userId);
+    }
 
 }

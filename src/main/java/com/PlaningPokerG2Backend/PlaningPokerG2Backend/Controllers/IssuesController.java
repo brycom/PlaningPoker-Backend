@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.IssuesService;
 
 @RestController
@@ -34,13 +34,13 @@ public class IssuesController {
     }
 
     @PostMapping("/{projectId}")
-    public ResponseEntity<Object> addIssue(@PathVariable String projectId, @RequestBody Issues issue) {
+    public ResponseEntity<Object> addIssue(@PathVariable String projectId, @RequestBody Issue issue) {
         try {
             issue.setStartTime(LocalDateTime.now());
             if (issue.getEstimatedTime() == 0) {
                 issue.setEstimatedTime(0.0f);
             }
-            Issues newIssue = issuesService.addIssue(projectId, issue);
+            Issue newIssue = issuesService.addIssue(projectId, issue);
             return new ResponseEntity<>(newIssue, HttpStatus.CREATED);
         } catch (Exception ex) {
             String errorMessage = "Issuename finns redan!";
@@ -50,9 +50,9 @@ public class IssuesController {
     }
 
     @GetMapping("/{prjectId}")
-    public ResponseEntity<List<Issues>> getIssues(@PathVariable String prjectId) {
+    public ResponseEntity<List<Issue>> getIssues(@PathVariable String prjectId) {
         try {
-            List<Issues> issues = issuesService.getIssues(prjectId);
+            List<Issue> issues = issuesService.getIssues(prjectId);
             return new ResponseEntity<>(issues, HttpStatus.OK);
         } catch (Exception ex) {
 
@@ -61,17 +61,17 @@ public class IssuesController {
     }
 
     @PatchMapping("/{issueId}")
-    ResponseEntity<?> updateIssue(@RequestBody Issues issues, @PathVariable String issueId) {
+    ResponseEntity<?> updateIssue(@RequestBody Issue issues, @PathVariable String issueId) {
         try {
 
-            Issues existingIssue = issuesService.getIssueById(issueId);
+            Issue existingIssue = issuesService.getIssueById(issueId);
             if (existingIssue == null) {
                 return ResponseEntity.notFound().build();
             }
             if (issues.getIssuename() != null) {
                 existingIssue.setIssuename(issues.getIssuename());
             }
-            Issues updatedIssue = issuesService.updateIssue(existingIssue);
+            Issue updatedIssue = issuesService.updateIssue(existingIssue);
             return ResponseEntity.ok(updatedIssue);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Uppdatering av issue misslyckades");
@@ -88,7 +88,7 @@ public class IssuesController {
     @PutMapping("/{prjectId}/{issueId}/close")
     ResponseEntity<String> closeIssue(@PathVariable String issueId, @PathVariable String projectId) {
         try {
-            Issues closedIssue = issuesService.closeIssue(projectId, issueId);
+            Issue closedIssue = issuesService.closeIssue(projectId, issueId);
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Issue med namn:" + closedIssue.getIssuename() + " stängd.");
         } catch (Exception ex) {

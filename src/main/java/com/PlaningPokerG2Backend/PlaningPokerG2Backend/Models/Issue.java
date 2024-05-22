@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 
-public class Issues {
+public class Issue {
     @Id
 
     private String issueId;
@@ -19,7 +19,7 @@ public class Issues {
     private float estimatedTime;
     private String actualTime;
 
-    public Issues(String issuename, LocalDateTime startTime, LocalDateTime endTime,
+    public Issue(String issuename, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
 
         this.issueId = UUID.randomUUID().toString();

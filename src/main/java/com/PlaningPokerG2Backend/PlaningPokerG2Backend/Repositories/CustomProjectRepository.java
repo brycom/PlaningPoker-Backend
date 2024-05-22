@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Vote;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.ProjectService;
@@ -37,10 +37,10 @@ public class CustomProjectRepository {
             return null;
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues" + allIssues);
 
-        for (Issues issue : allIssues) {
+        for (Issue issue : allIssues) {
             if (issue.getIssueId().equals(issueId)) {
 
                 return issue.getVotes();
@@ -61,10 +61,10 @@ public class CustomProjectRepository {
             return null;
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
 
-        for (Issues issue : allIssues) {
+        for (Issue issue : allIssues) {
             if (issue.getIssueId().equals(issueId)) {
                 issue.getVotes().add(vote);
                 mongoOperations.save(project);

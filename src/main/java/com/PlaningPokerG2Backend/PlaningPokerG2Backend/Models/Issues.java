@@ -1,6 +1,7 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,12 +19,12 @@ public class Issues {
     private float estimatedTime;
     private String actualTime;
 
-    public Issues(String issuename, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
+    public Issues(String issuename, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
 
         this.issueId = UUID.randomUUID().toString();
         this.issuename = issuename;
-        this.votes = votes;
+        this.votes = new ArrayList<Vote>();
         this.startTime = startTime;
         this.endTime = endTime;
         this.estimatedTime = estimatedTime;

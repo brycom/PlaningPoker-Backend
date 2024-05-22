@@ -5,32 +5,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 @Document(collection = "Roles")
-public class Role implements GrantedAuthority { 
-    
+public class Role implements GrantedAuthority {
+
     @Id
-    private int id;
+    private String roleId;
     private String authority;
 
     public Role(String authority) {
         this.authority = authority;
     }
 
-    public Role(int id, String authority) {
-        this.id = id;
-        this.authority = authority;
-    }
-
     public Role() {
         super();
-        
+
     }
 
-    public int getId() {
-        return id;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String roleId) {
+        this.roleId = roleId;
     }
 
     public void setAuthority(String authority) {
@@ -41,6 +36,5 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return this.authority;
     }
-
 
 }

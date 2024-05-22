@@ -1,5 +1,6 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +55,5 @@ public class VoteController {
         
         return "delete";
     }
+
 }

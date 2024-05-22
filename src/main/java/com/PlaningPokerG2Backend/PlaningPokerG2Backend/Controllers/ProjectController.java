@@ -13,14 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.ProjectService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/project")
+@CrossOrigin("*")
 public class ProjectController {
 
     @Autowired
@@ -49,30 +51,39 @@ public class ProjectController {
     }
 
     @PatchMapping("/project/{id}")
-     public Project editProject(@PathVariable String id, @RequestBody Project project) {
+    public Project editProject(@PathVariable String id, @RequestBody Project project) {
         return projectService.editProjects(id, project);
+    }
+
+    @GetMapping("/{projectId}/users")
+    public ResponseEntity<List<User>> getUsersInProject(@PathVariable String projectId) {
+        List<User> users = projectService.getUsersInProject(projectId);
+        if (users == null || users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);  
     }
 
     @PostMapping("/projects/addUser")
     public ResponseEntity<Project> addUserToProject(@RequestBody Map<String, String> requestData) {
-    String projectId = requestData.get("projectId");
-    String userId = requestData.get("userId");
-    Project updatedProject = projectService.addUserToProject(projectId, userId);
-    if (updatedProject == null) {
-        return ResponseEntity.notFound().build();
+        String projectId = requestData.get("projektId");
+        String userId = requestData.get("userId");
+        Project updatedProject = projectService.addUserToProject(projectId, userId);
+        if (updatedProject == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedProject);
     }
-    return ResponseEntity.ok(updatedProject);
-}
 
-   @DeleteMapping("/projects/deleteUser")
+    @DeleteMapping("/projects/deleteUser")
     public ResponseEntity<Project> deleteUserFromProject(@RequestBody Map<String, String> requestData) {
-        String projectId = requestData.get("projectId");
+        String projectId = requestData.get("projektId");
         String userId = requestData.get("userId");
         Project updatedProject = projectService.deleteUserFromProject(projectId, userId);
         if (updatedProject == null) {
-            return ResponseEntity.notFound().build();  // Om projektet inte hittas eller operationen misslyckas
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedProject);  // Returnerar det uppdaterade projektet med status 200 OK
+        return ResponseEntity.ok(updatedProject); 
     }
-    
+
 }

@@ -2,12 +2,15 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 
 @Service
 public class ProjectService {
@@ -18,9 +21,9 @@ public class ProjectService {
         this.mongoOperations = mongoOperations;
     }
 
-    public Project getProjectById(String id) {
+    public Project getProjectById(String projektId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(id));
+        query.addCriteria(Criteria.where("projektId").is(projektId));
 
         return mongoOperations.findOne(query, Project.class);
     }
@@ -36,39 +39,47 @@ public class ProjectService {
         return mongoOperations.insert(project);
     }
 
-    public void deleteProject(String id) {
-        Query query = Query.query(Criteria.where("id").is(id));
+    public void deleteProject(String projektId) {
+        Query query = Query.query(Criteria.where("projektId").is(projektId));
 
         mongoOperations.remove(query, Project.class);
     }
 
-    public Project editProjects(String id, Project project) {
-        Query query = Query.query(Criteria.where("id").is(id));
-        Update update = Update.update("projectName", project.getProjectName());
+    public Project editProjects(String projektId, Project project) {
+        Query query = Query.query(Criteria.where("projektId").is(projektId));
+        Update update = Update.update("projectname", project.getProjectname());
 
         mongoOperations.updateFirst(query, update, Project.class);
-        return mongoOperations.findById(id, Project.class);
+        return mongoOperations.findById(projektId, Project.class);
     }
 
-    public Project addUserToProject(String projectId, String userId) {
-        Query query = new Query(Criteria.where("ProjectId").is(projectId));
+    public Project addUserToProject(String projektId, String userId) {
+        Query query = new Query(Criteria.where("ProjektId").is(projektId));
         Update update = new Update().addToSet("userIds", userId);
-        mongoOperations.updateFirst(query, update, Project.class); 
+        mongoOperations.updateFirst(query, update, Project.class);
 
         return mongoOperations.findAndModify(query, update, Project.class);
 
         //Behöver kollas över när vi ändrar projectId och userId
     }
 
-    public Project deleteUserFromProject(String projectId, String userId) {
-        Query query = new Query(Criteria.where("id").is(projectId));
-        Update update = new Update().pull("userIds", userId);  // Tar bort användar-ID från listan
-        mongoOperations.updateFirst(query, update, Project.class);  // Uppdaterar projektet
-        return mongoOperations.findById(projectId, Project.class);  // Returnerar det uppdaterade projektet
+    public Project deleteUserFromProject(String projektId, String userId) {
+        Query query = new Query(Criteria.where("projektId").is(projektId));
+        Update update = new Update().pull("userIds", userId); // Tar bort användar-ID från listan
+        mongoOperations.updateFirst(query, update, Project.class); // Uppdaterar projektet
+        return mongoOperations.findById(projektId, Project.class); // Returnerar det uppdaterade projektet
 
         //Behöver kollas över när vi ändrar projectId och userId
     }
 
-    
+    public List<User> getUsersInProject(String projektId) {
+    Query query = new Query(Criteria.where("projektId").is(projektId));
+    Project project = mongoOperations.findOne(query, Project.class);
+    if (project != null && project.getUserIds() != null) {
+        Query userQuery = new Query(Criteria.where("userId").in(project.getUserIds()));
+        return mongoOperations.find(userQuery, User.class);
+    }
+    return new ArrayList<>();  
+}
 
 }

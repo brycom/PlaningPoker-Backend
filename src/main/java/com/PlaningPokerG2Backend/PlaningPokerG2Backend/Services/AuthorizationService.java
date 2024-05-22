@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +44,7 @@ public class AuthorizationService {
             Role role = mongoOperations.findOne(query, Role.class);
             Set<Role> roles = new HashSet<Role>();
             roles.add(role);
-            user.setRole(roles);
+            user.addRole(role);
             mongoOperations.insert(user);
             return new UserDTO(user.getUsername(), user.getFirstName(), null);
         } else
@@ -55,23 +54,23 @@ public class AuthorizationService {
 
     public LoginResponsDTO login(String username, String password) {
 
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
-            System.out.println(auth);
+        /*  try { */
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
+        System.out.println(auth);
 
-            String token = tokenService.jwtGenerator(auth);
-            System.out.println(token);
-            Query query = Query.query(Criteria.where("username").is(username));
-            User user = mongoOperations.findOne(query, User.class);
-            UserDTO userDTO = new UserDTO(user.getUsername(), user.getFirstName(), user.getId());
+        String token = tokenService.jwtGenerator(auth);
+        System.out.println(token);
+        Query query = Query.query(Criteria.where("username").is(username));
+        User user = mongoOperations.findOne(query, User.class);
+        UserDTO userDTO = new UserDTO(user.getUsername(), user.getFirstName(), user.getUserId());
 
-            return new LoginResponsDTO(userDTO, token);
+        return new LoginResponsDTO(userDTO, token);
 
-        } catch (AuthenticationException e) {
-            return new LoginResponsDTO(null, "Felaktigt användarnamn");
+        /*         } catch (AuthenticationException e) {
+            return new LoginResponsDTO(null, "Felaktigt användarnamn eller lösenord");
         }
-
+         */
     }
 
 }

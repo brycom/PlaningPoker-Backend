@@ -40,11 +40,11 @@ public class Issues {
     }
 
     public String getIssuename() {
-        return issuename;
+        return issueName;
     }
 
-    public void setIssuename(String issuename) {
-        this.issuename = issuename;
+    public void setIssuename(String issueName) {
+        this.issueName = issueName;
     }
 
     public List<Vote> getVotes() {
@@ -85,6 +85,14 @@ public class Issues {
 
     public void setActualTime(String actualTime) {
         this.actualTime = actualTime;
+    }
+
+    // Helper method to calculate average vote
+    public double getAverageVote() {
+        if (votes != null && !votes.isEmpty()) {
+            return votes.stream().mapToDouble(Vote::getVote).average().orElse(0.0);
+        }
+        return 0.0;
     }
 
 }

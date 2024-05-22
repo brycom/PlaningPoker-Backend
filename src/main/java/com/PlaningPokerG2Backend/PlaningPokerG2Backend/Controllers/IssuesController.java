@@ -79,9 +79,9 @@ public class IssuesController {
 
     }
 
-    @DeleteMapping("/{issueId}")
-    ResponseEntity<?> deleteIssue(@PathVariable UUID issueId) {
-        issuesService.deleteIssue(issueId);
+    @DeleteMapping("/{prjectId}/{issueId}")
+    ResponseEntity<?> deleteIssue(@PathVariable String prjectId, @PathVariable String issueId) {
+        issuesService.deleteIssue(prjectId, issueId);
         return ResponseEntity.status(HttpStatus.OK).body("Issue borttagen");
     }
 

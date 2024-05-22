@@ -66,9 +66,13 @@ public class IssuesService {
         return mongoOperations.save(updatedIssue);
     }
 
-    public void deleteIssue(UUID issueId) {
-        Query query = new Query(Criteria.where("issueId").is(issueId));
-        mongoOperations.remove(query, Issues.class);
+    public void deleteIssue(String projectId, String issueId) {
+        /*  Query query = new Query(Criteria.where("issueId").is(issueId));
+        mongoOperations.remove(query, Issues.class); */
+        Project project = mongoOperations.findById(projectId, Project.class);
+        List<Issues> issues = project.getIssues();
+        issues.removeIf(is -> is.getIssueId().equals(issueId));
+        mongoOperations.save(project);
 
     }
 

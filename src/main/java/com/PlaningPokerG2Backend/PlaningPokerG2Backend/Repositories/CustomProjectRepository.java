@@ -22,39 +22,11 @@ public class CustomProjectRepository {
     @Autowired
     private ProjectService projectService;
 
-    public List<Vote> findVotesByIssueId(String projectId, String issueId) {
-        System.out.println("Project ID: " + projectId);
-        System.out.println("Issue ID: " + issueId);
-
-        Query query = new Query(Criteria.where("id").is(projectId));
-
-        System.out.println("query: " + query);
-
-        Project project = mongoOperations.findOne(query, Project.class);
-
-        if (project == null) {
-            System.out.println("Project not found");
-            return null;
-        }
-
-        List<Issues> allIssues = project.getIssues();
-        System.out.println("allIssues" + allIssues);
-
-        for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {
-
-                return issue.getVotes();
-            }
-        }
-
-        System.out.println("Issue not found");
-        return null;
-    }
-
+    
     public Vote addUserVote(Vote vote, String projectId, String issueId) {
         
-        Query query = new Query(Criteria.where("id").is(projectId));
-        Project project = mongoOperations.findOne(query, Project.class);
+    
+        Project project = mongoOperations.findById(projectId, Project.class);
     
         if (project == null) {
             System.out.println("Project not found");

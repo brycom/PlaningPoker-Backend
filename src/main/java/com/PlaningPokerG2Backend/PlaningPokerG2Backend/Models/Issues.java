@@ -10,7 +10,7 @@ public class Issues {
     @Id
 
     private String id;
-    private String issueName;
+    private String issuename;
     private List <Vote> votes;
 
     private LocalDateTime startTime;
@@ -18,11 +18,11 @@ public class Issues {
     private float estimatedTime;
     private String actualTime;
 
-    public Issues(String issueName, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
+    public Issues(String issuename, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
 
         this.id = UUID.randomUUID().toString();
-        this.issueName = issueName;
+        this.issuename = issuename;
 
         this.votes = votes;
         this.startTime = startTime;

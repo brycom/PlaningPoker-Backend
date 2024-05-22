@@ -38,22 +38,24 @@ public class VoteController {
     @GetMapping("/votes/{projectId}/{issueId}")
     public List<Vote> getVotes(@PathVariable String projectId, @PathVariable String issueId) {
 
-        List<Vote> votes = customProjectRepository.findVotesByIssueId(projectId, issueId);
+        List<Vote> votes = voteService.findVotesByIssueId(projectId, issueId);
         return votes;
     }
 
     // add vote to issue with userId
     @PostMapping("/uservote/{projectId}/{issueId}")
     public Vote addUserVote(@RequestBody Vote vote, @PathVariable String projectId, @PathVariable String issueId) {
-        customProjectRepository.addUserVote(vote, projectId, issueId);
+        voteService.addUserVote(vote, projectId, issueId);
         return vote;
     }
 
     // reset vote
-    @DeleteMapping("/deleteVotes{projectId}/{issueId}")
+    @DeleteMapping("/deletevotes/{projectId}/{issueId}")
     public String resetVotes(@PathVariable String projectId, @PathVariable String issueId) {
         
-        return "delete";
+        return voteService.resetVotes(projectId, issueId);
     }
+
+    // Get vote with by userId reference
 
 }

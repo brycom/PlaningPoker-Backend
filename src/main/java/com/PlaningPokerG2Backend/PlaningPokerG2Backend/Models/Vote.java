@@ -6,21 +6,21 @@ import org.springframework.data.annotation.Id;
 
 public class Vote {
     @Id
-    private UUID voteId;
+    private String voteId;
     private String userId;
     private float vote;
 
     public Vote(String userId, float vote) {
-        this.voteId = UUID.randomUUID();
+        this.voteId = UUID.randomUUID().toString();
         this.userId = userId;
         this.vote = vote;
     }
 
-    public UUID getVoteId() {
+    public String getVoteId() {
         return voteId;
     }
 
-    public void setVoteId(UUID voteId) {
+    public void setVoteId(String voteId) {
         this.voteId = voteId;
     }
 

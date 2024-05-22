@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Vote;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.ProjectService;
@@ -37,11 +37,11 @@ public class CustomProjectRepository {
             return null;
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues" + allIssues);
 
-        for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {
+        for (Issue issue : allIssues) {
+            if (issue.getIssueId().equals(issueId)) {
 
                 return issue.getVotes();
             }
@@ -52,30 +52,30 @@ public class CustomProjectRepository {
     }
 
     public Vote addUserVote(Vote vote, String projectId, String issueId) {
-        
+
         Query query = new Query(Criteria.where("id").is(projectId));
         Project project = mongoOperations.findOne(query, Project.class);
-    
+
         if (project == null) {
             System.out.println("Project not found");
             return null;
         }
-    
-        List<Issues> allIssues = project.getIssues();
+
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
-       
-        for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {          
-                issue.getVotes().add(vote);      
+
+        for (Issue issue : allIssues) {
+            if (issue.getIssueId().equals(issueId)) {
+                issue.getVotes().add(vote);
                 mongoOperations.save(project);
                 return vote;
             }
         }
-    
+
         System.out.println("Issue not found");
         return null;
     }
-    
+
     // public String resetVotes(String projectId, String issueId) {
 
     //     Query query = new Query(Criteria.where("id").is(projectId));

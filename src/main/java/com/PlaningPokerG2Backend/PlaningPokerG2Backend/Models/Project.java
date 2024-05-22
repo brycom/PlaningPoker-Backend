@@ -1,5 +1,6 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -14,11 +15,13 @@ public class Project {
     private List<Issues> issues;
     private boolean active;
 
-    public Project(String projektId, String projectname, List<String> userIds, List<Issues> issues, boolean active) {
+    //Skapar listorna direkt i konstruktorn istället för att ta in som input.
+    //setters för userids och issues omgjorda till add funktioner.
+    public Project(String projektId, String projectname, boolean active) {
         this.projektId = projektId;
         this.projectname = projectname;
-        this.userIds = userIds;
-        this.issues = issues;
+        this.userIds = new ArrayList<String>();
+        this.issues = new ArrayList<Issues>();
         this.active = active;
     }
 
@@ -42,16 +45,16 @@ public class Project {
         return userIds;
     }
 
-    public void setUserIds(List<String> userIds) {
-        this.userIds = userIds;
+    public void addUserIds(String userIds) {
+        this.userIds.add(userIds);
     }
 
     public List<Issues> getIssues() {
         return issues;
     }
 
-    public void setIssues(List<Issues> issues) {
-        this.issues = issues;
+    public void addIssues(Issues issues) {
+        this.issues.add(issues);
     }
 
     public boolean isActive() {

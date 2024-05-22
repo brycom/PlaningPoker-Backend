@@ -9,34 +9,25 @@ import org.springframework.data.annotation.Id;
 public class Issues {
     @Id
 
-    private String id;
-    private String issueName;
-    private List <Vote> votes;
+    private String issueId;
+    private String issuename;
+    private List<Vote> votes;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private float estimatedTime;
     private String actualTime;
 
-    public Issues(String issueName, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
+    public Issues(String issuename, List<Vote> votes, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
 
-        this.id = UUID.randomUUID().toString();
-        this.issueName = issueName;
-
+        this.issueId = UUID.randomUUID().toString();
+        this.issuename = issuename;
         this.votes = votes;
         this.startTime = startTime;
         this.endTime = endTime;
         this.estimatedTime = estimatedTime;
         this.actualTime = actualTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-
     }
 
     public String getIssuename() {
@@ -85,6 +76,14 @@ public class Issues {
 
     public void setActualTime(String actualTime) {
         this.actualTime = actualTime;
+    }
+
+    public String getIssueId() {
+        return issueId;
+    }
+
+    public void setIssueId(String issueId) {
+        this.issueId = issueId;
     }
 
 }

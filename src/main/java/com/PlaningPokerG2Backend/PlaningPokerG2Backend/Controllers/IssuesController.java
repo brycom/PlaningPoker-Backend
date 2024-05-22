@@ -33,14 +33,14 @@ public class IssuesController {
         this.issuesService = issuesService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Object> addIssue(@RequestBody Issues issue) {
+    @PostMapping("/{projectId}")
+    public ResponseEntity<Object> addIssue(@PathVariable String projectId, @RequestBody Issues issue) {
         try {
             issue.setStartTime(LocalDateTime.now());
             if (issue.getEstimatedTime() == 0) {
                 issue.setEstimatedTime(0.0f);
             }
-            Issues newIssue = issuesService.addIssue(issue);
+            Issues newIssue = issuesService.addIssue(projectId, issue);
             return new ResponseEntity<>(newIssue, HttpStatus.CREATED);
         } catch (Exception ex) {
             String errorMessage = "Issuename finns redan!";
@@ -49,14 +49,19 @@ public class IssuesController {
         }
     }
 
-    @GetMapping("/issues")
-    public ResponseEntity<List<Issues>> getIssues() {
-        List<Issues> issues = issuesService.getIssues();
-        return new ResponseEntity<>(issues, HttpStatus.OK);
+    @GetMapping("/{prjectId}")
+    public ResponseEntity<List<Issues>> getIssues(@PathVariable String prjectId) {
+        try {
+            List<Issues> issues = issuesService.getIssues(prjectId);
+            return new ResponseEntity<>(issues, HttpStatus.OK);
+        } catch (Exception ex) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PatchMapping("/{issueId}")
-    ResponseEntity<?> updateIssue(@RequestBody Issues issues, @PathVariable UUID issueId) {
+    ResponseEntity<?> updateIssue(@RequestBody Issues issues, @PathVariable String issueId) {
         try {
 
             Issues existingIssue = issuesService.getIssueById(issueId);
@@ -80,10 +85,10 @@ public class IssuesController {
         return ResponseEntity.status(HttpStatus.OK).body("Issue borttagen");
     }
 
-    @PutMapping("/{issueId}/close")
-    ResponseEntity<String> closeIssue(@PathVariable UUID issueId) {
+    @PutMapping("/{prjectId}/{issueId}/close")
+    ResponseEntity<String> closeIssue(@PathVariable String issueId, @PathVariable String projectId) {
         try {
-            Issues closedIssue = issuesService.closeIssue(issueId);
+            Issues closedIssue = issuesService.closeIssue(projectId, issueId);
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Issue med namn:" + closedIssue.getIssuename() + " stängd.");
         } catch (Exception ex) {

@@ -41,7 +41,7 @@ public class CustomProjectRepository {
         System.out.println("allIssues" + allIssues);
 
         for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {
+            if (issue.getIssueId().equals(issueId)) {
 
                 return issue.getVotes();
             }
@@ -52,30 +52,30 @@ public class CustomProjectRepository {
     }
 
     public Vote addUserVote(Vote vote, String projectId, String issueId) {
-        
+
         Query query = new Query(Criteria.where("id").is(projectId));
         Project project = mongoOperations.findOne(query, Project.class);
-    
+
         if (project == null) {
             System.out.println("Project not found");
             return null;
         }
-    
+
         List<Issues> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
-       
+
         for (Issues issue : allIssues) {
-            if (issue.getId().equals(issueId)) {          
-                issue.getVotes().add(vote);      
+            if (issue.getIssueId().equals(issueId)) {
+                issue.getVotes().add(vote);
                 mongoOperations.save(project);
                 return vote;
             }
         }
-    
+
         System.out.println("Issue not found");
         return null;
     }
-    
+
     // public String resetVotes(String projectId, String issueId) {
 
     //     Query query = new Query(Criteria.where("id").is(projectId));

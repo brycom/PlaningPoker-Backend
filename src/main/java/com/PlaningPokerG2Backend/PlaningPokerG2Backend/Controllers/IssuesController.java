@@ -58,24 +58,27 @@ public class IssuesController {
         }
     }
 
-    @PatchMapping("/{issueId}")
-    ResponseEntity<?> updateIssue(@RequestBody Issue issues, @PathVariable String issueId) {
-        try {
-
-            Issue existingIssue = issuesService.getIssueById(issueId);
-            if (existingIssue == null) {
-                return ResponseEntity.notFound().build();
-            }
-            if (issues.getIssuename() != null) {
-                existingIssue.setIssuename(issues.getIssuename());
-            }
-            Issue updatedIssue = issuesService.updateIssue(existingIssue);
-            return ResponseEntity.ok(updatedIssue);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Uppdatering av issue misslyckades");
+@PatchMapping("/{issueId}")
+public ResponseEntity<?> updateIssue(@RequestBody Issue issues, @PathVariable String issueId) {
+    try {
+        Issue existingIssue = issuesService.getIssueById(issueId);
+        if (existingIssue == null) {
+            return ResponseEntity.notFound().build();
         }
-
+        if (issues.getIssuename() != null) {
+            existingIssue.setIssuename(issues.getIssuename());
+        }
+        // Lägg till fler fält som kan uppdateras här, t.ex.:
+        // if (issues.getEstimatedTime() != null) {
+        //     existingIssue.setEstimatedTime(issues.getEstimatedTime());
+        // }
+        Issue updatedIssue = issuesService.updateIssue(existingIssue);
+        return ResponseEntity.ok(updatedIssue);
+    } catch (Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Uppdatering av issue misslyckades");
     }
+}
+
 
     @DeleteMapping("/{projectId}/{issueId}")
     ResponseEntity<?> deleteIssue(@PathVariable String projectId, @PathVariable String issueId) {

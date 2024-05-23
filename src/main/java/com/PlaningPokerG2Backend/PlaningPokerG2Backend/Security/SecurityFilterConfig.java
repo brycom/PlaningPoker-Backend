@@ -20,7 +20,7 @@ public class SecurityFilterConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/admin/**", "/role/**")/* .hasRole("admin") */.permitAll();
-                    auth.requestMatchers("/users/**", "/project/**", "/issue/**", "/statistics/**").hasAnyRole("admin",
+                    auth.requestMatchers("/users/**", "/vote/**", "/project/**", "/issue/**", "/statistics/**").hasAnyRole("admin",
                             "user");
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2

@@ -77,10 +77,10 @@ public class IssuesController {
 
     }
 
-    @DeleteMapping("/{prjectId}/{issueId}")
-    ResponseEntity<?> deleteIssue(@PathVariable String prjectId, @PathVariable String issueId) {
+    @DeleteMapping("/{projectId}/{issueId}")
+    ResponseEntity<?> deleteIssue(@PathVariable String projectId, @PathVariable String issueId) {
         try {
-            issuesService.deleteIssue(prjectId, issueId);
+            issuesService.deleteIssue(projectId, issueId);
             return ResponseEntity.status(HttpStatus.OK).body("Issue borttagen");
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Borttagning av issue misslyckades");

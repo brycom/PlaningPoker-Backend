@@ -1,26 +1,35 @@
 package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models;
 
-import java.util.Set;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.HashSet;
+
+import java.util.Set;
 
 @Document(collection = "Users")
-public class User {
-    
+public class User implements UserDetails {
+
     @Id
-    private String id;
-    private String userName;
+    private String userId;
+    private String username;
     private String firstName;
     private String lastName;
     private String password;
     private String email;
-    private Set <Role> role;
+    private Set<Role> role;
 
-    public User(String id, String userName, String firstName, String lastName, String password, String email,
-            Set<Role> role) {
-        this.id = id;
-        this.userName = userName;
+    public User() {
+        super();
+        this.role = new HashSet<Role>();
+    }
+
+    public User(String username, String firstName, String lastName, String password, String email, Set<Role> role) {
+        super();
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -28,20 +37,16 @@ public class User {
         this.role = role;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String userId) {
+        this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -80,10 +85,70 @@ public class User {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void addRole(Role role) {
+        this.role.add(role);
     }
-    
 
-    
+    public void removeRole(Role role) {
+        boolean removed = false;
+        if (this.role.size() > 1) {
+            for (Role r : this.role) {
+                if (r.getAuthority().equals(role.getAuthority())) {
+                    this.role.remove(r);
+                    removed = true;
+
+                }
+            }
+            if (!removed) {
+                throw new IllegalStateException("ingen roll med det id't på denna användaren");
+            }
+        } else {
+
+            throw new IllegalStateException("Denna användaren har bara en roll");
+        }
+    }
+
+    public void switchRole(Role role) {
+        Object[] roles = this.role.toArray();
+        Role oldRole = (Role) roles[0];
+        this.role.add(role);
+        this.role.remove(oldRole);
+
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        return this.role;
+    }
+
+    @Override
+    public String getUsername() {
+
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+
+        return true;
+    }
 }

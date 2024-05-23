@@ -2,8 +2,6 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,13 +77,17 @@ public class IssuesController {
 
     }
 
-    @DeleteMapping("/{prjectId}/{issueId}")
-    ResponseEntity<?> deleteIssue(@PathVariable String prjectId, @PathVariable String issueId) {
-        issuesService.deleteIssue(prjectId, issueId);
-        return ResponseEntity.status(HttpStatus.OK).body("Issue borttagen");
+    @DeleteMapping("/{projectId}/{issueId}")
+    ResponseEntity<?> deleteIssue(@PathVariable String projectId, @PathVariable String issueId) {
+        try {
+            issuesService.deleteIssue(projectId, issueId);
+            return ResponseEntity.status(HttpStatus.OK).body("Issue borttagen");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Borttagning av issue misslyckades");
+        }
     }
 
-    @PutMapping("/{prjectId}/{issueId}/close")
+    @PutMapping("/{projectId}/{issueId}/close")
     ResponseEntity<String> closeIssue(@PathVariable String issueId, @PathVariable String projectId) {
         try {
             Issue closedIssue = issuesService.closeIssue(projectId, issueId);

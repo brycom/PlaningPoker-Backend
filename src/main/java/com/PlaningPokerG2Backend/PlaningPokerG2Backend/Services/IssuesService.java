@@ -3,8 +3,6 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
 import javax.naming.NameNotFoundException;
 
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -12,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 
 @Service
@@ -26,15 +24,15 @@ public class IssuesService {
 
     public boolean isIssueNameUnique(String issueName) {
         Query query = new Query(Criteria.where("issuename").is(issueName));
-        return mongoOperations.find(query, Issues.class).isEmpty();
+        return mongoOperations.find(query, Issue.class).isEmpty();
     }
 
-    public Issues addIssue(String projektId, Issues issue) throws Exception {
+    public Issue addIssue(String projektId, Issue issue) throws Exception {
         Project projekt = mongoOperations.findById(projektId, Project.class);
         if (projekt == null) {
             throw new NameNotFoundException("Projekt finns inte");
         }
-        for (Issues i : projekt.getIssues()) {
+        for (Issue i : projekt.getIssues()) {
             if (!isIssueNameUnique(i.getIssuename())) {
                 throw new Exception("Issuename finns redan");
             }
@@ -45,8 +43,8 @@ public class IssuesService {
         return issue;
     }
 
-    public List<Issues> getIssues(String projectId) throws Exception {
-        List<Issues> issues = mongoOperations.findById(projectId, Project.class).getIssues();
+    public List<Issue> getIssues(String projectId) throws Exception {
+        List<Issue> issues = mongoOperations.findById(projectId, Project.class).getIssues();
 
         if (issues == null) {
             throw new NameNotFoundException("Projekt finns inte");
@@ -56,32 +54,37 @@ public class IssuesService {
         return issues;
     }
 
-    public Issues getIssueById(String issueId) {
+    public Issue getIssueById(String issueId) {
         Query query = new Query(Criteria.where("issueId").is(issueId));
-        Issues existingIssue = mongoOperations.findOne(query, Issues.class);
+        Issue existingIssue = mongoOperations.findOne(query, Issue.class);
         return existingIssue;
     }
 
-    public Issues updateIssue(Issues updatedIssue) {
+    public Issue updateIssue(Issue updatedIssue) {
         return mongoOperations.save(updatedIssue);
     }
 
-    public void deleteIssue(String projectId, String issueId) {
-        /*  Query query = new Query(Criteria.where("issueId").is(issueId));
-        mongoOperations.remove(query, Issues.class); */
+    public void deleteIssue(String projectId, String issueId) throws Exception {
         Project project = mongoOperations.findById(projectId, Project.class);
-        List<Issues> issues = project.getIssues();
+        if (project == null) {
+            throw new NameNotFoundException("Projekt finns inte");
+        }
+        List<Issue> issues = project.getIssues();
+        if (issues.size() <= 1) {
+            throw new IllegalArgumentException("Du måste ha minst ett issue");
+
+        }
         issues.removeIf(is -> is.getIssueId().equals(issueId));
         mongoOperations.save(project);
 
     }
 
-    public Issues closeIssue(String projectId, String issueId) throws Exception {
+    public Issue closeIssue(String projectId, String issueId) throws Exception {
         Project project = mongoOperations.findById(projectId, Project.class);
         if (project == null) {
             throw new IllegalArgumentException("Projekt finns inte");
         }
-        Issues issue = project.getIssues().stream().filter(is -> is.getIssueId().equals(issueId)).findFirst()
+        Issue issue = project.getIssues().stream().filter(is -> is.getIssueId().equals(issueId)).findFirst()
                 .orElseThrow(() -> new Exception("issuet fins inte"));
 
         LocalDateTime startTime = issue.getStartTime();

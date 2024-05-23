@@ -65,4 +65,12 @@ public class Project {
         this.active = active;
     }
 
+        // Helper method to calculate average votes per issue
+        public double getAverageVotesPerIssue() {
+            if (issues != null && !issues.isEmpty()) {
+                double totalVotes = issues.stream().flatMap(issue -> issue.getVotes().stream()).count();
+                return totalVotes / issues.size();
+            }
+            return 0;
+        }
 }

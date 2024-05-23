@@ -88,4 +88,12 @@ public class Issue {
         this.issueId = issueId;
     }
 
+        // Helper method to calculate average vote
+        public double getAverageVote() {
+            if (votes != null && !votes.isEmpty()) {
+                return votes.stream().mapToDouble(Vote::getVote).average().orElse(0.0);
+            }
+            return 0.0;
+        }
+
 }

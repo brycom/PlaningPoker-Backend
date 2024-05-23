@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.AdminService;
@@ -36,7 +36,7 @@ public class AdminController {
     }
 
     @GetMapping("/issues")
-    public List<Issues> getIssues() {
+    public List<Issue> getIssues() {
         return adminService.getIssues();
     }
 

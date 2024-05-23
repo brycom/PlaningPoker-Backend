@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 
 @Service
 public class IssuesService {
@@ -22,41 +22,41 @@ public class IssuesService {
 
     public boolean isIssueNameUnique(String issueName) {
         Query query = new Query(Criteria.where("issuename").is(issueName));
-        return mongoOperations.find(query, Issues.class).isEmpty();
+        return mongoOperations.find(query, Issue.class).isEmpty();
     }
 
-    public Issues addIssue(Issues issues) throws Exception {
+    public Issue addIssue(Issue issues) throws Exception {
         if (!isIssueNameUnique(issues.getIssuename())) {
             throw new Exception("Issuename finns redan");
         }
         return mongoOperations.insert(issues);
     }
 
-    public List<Issues> getIssues() {
-        return mongoOperations.findAll(Issues.class);
+    public List<Issue> getIssues() {
+        return mongoOperations.findAll(Issue.class);
     }
 
-    public Issues getIssueById(UUID issueId) {
+    public Issue getIssueById(UUID issueId) {
         Query query = new Query(Criteria.where("issueId").is(issueId));
-        Issues existingIssue = mongoOperations.findOne(query, Issues.class);
+        Issue existingIssue = mongoOperations.findOne(query, Issue.class);
         return existingIssue;
     }
 
-    public Issues updateIssue(Issues updatedIssue) {
+    public Issue updateIssue(Issue updatedIssue) {
         return mongoOperations.save(updatedIssue);
     }
 
     public void deleteIssue(UUID issueId) {
         Query query = new Query(Criteria.where("issueId").is(issueId));
-        mongoOperations.remove(query, Issues.class);
+        mongoOperations.remove(query, Issue.class);
 
     }
 
-    public Issues closeIssue(UUID id) {
+    public Issue closeIssue(UUID id) {
         if (getIssueById(id) == null) {
             throw new IllegalArgumentException("Issue not found");
         }
-        Issues issue = getIssueById(id);
+        Issue issue = getIssueById(id);
 
         LocalDateTime startTime = issue.getStartTime();
         LocalDateTime endTime = LocalDateTime.now();

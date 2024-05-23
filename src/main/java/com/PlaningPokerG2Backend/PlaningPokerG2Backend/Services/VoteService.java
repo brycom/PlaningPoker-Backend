@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Vote;
 
@@ -29,10 +29,10 @@ public class VoteService {
             return null;
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues" + allIssues);
 
-        for (Issues issue : allIssues) {
+        for (Issue issue : allIssues) {
             if (issue.getId().equals(issueId)) {
 
                 return issue.getVotes();
@@ -52,10 +52,10 @@ public class VoteService {
             return null;
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
 
-        for (Issues issue : allIssues) {
+        for (Issue issue : allIssues) {
             if (issue.getId().equals(issueId)) {
                 issue.getVotes().add(vote);
                 mongoOperations.save(project);
@@ -76,10 +76,10 @@ public class VoteService {
             return "Project not found";
         }
 
-        List<Issues> allIssues = project.getIssues();
+        List<Issue> allIssues = project.getIssues();
         System.out.println("allIssues: " + allIssues);
 
-        for (Issues issue : allIssues) {
+        for (Issue issue : allIssues) {
             if (issue.getId().equals(issueId)) {
 
                 issue.getVotes().clear();
@@ -99,8 +99,8 @@ public class VoteService {
             System.out.println("Project not found");
             return null;
         }
-        List<Issues> allIssues = project.getIssues();
-        for (Issues issue : allIssues) {
+        List<Issue> allIssues = project.getIssues();
+        for (Issue issue : allIssues) {
             if (issue.getId().equals(issueId)) {
 
                 List<Vote> votes = issue.getVotes();

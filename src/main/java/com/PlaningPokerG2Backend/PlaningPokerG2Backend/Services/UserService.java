@@ -60,6 +60,15 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public User getUserByUsername(String username) throws UsernameNotFoundException {
+        Query query = Query.query(Criteria.where("username").is(username));
+        User user = mongoOperations.findOne(query, User.class);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
+    }
+
     private UserDTO convertToUserDTO(User user) {
         return new UserDTO(user.getUsername(), user.getFirstName(), user.getUserId());
     }

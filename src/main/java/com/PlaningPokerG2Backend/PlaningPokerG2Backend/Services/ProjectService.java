@@ -28,8 +28,16 @@ public class ProjectService {
         return mongoOperations.findOne(query, Project.class);
     }
 
-    public List<Project> getProjects() {
-        return mongoOperations.findAll(Project.class);
+    public List<Project> getProjects(String user) {
+        List<Project> projects = mongoOperations.findAll(Project.class);
+        List<Project> usersProjects = new ArrayList<>();
+        for (Project project : projects) {
+            if (project.getUserIds().contains(user)) {
+                usersProjects.add(project);
+
+            }
+        }
+        return usersProjects;
 
         //Behöver kollas över när vi ändrar projectId och userId
         //denna ska endast lista de projekt som finns under en user
@@ -73,13 +81,13 @@ public class ProjectService {
     }
 
     public List<User> getUsersInProject(String projektId) {
-    Query query = new Query(Criteria.where("projektId").is(projektId));
-    Project project = mongoOperations.findOne(query, Project.class);
-    if (project != null && project.getUserIds() != null) {
-        Query userQuery = new Query(Criteria.where("userId").in(project.getUserIds()));
-        return mongoOperations.find(userQuery, User.class);
+        Query query = new Query(Criteria.where("projektId").is(projektId));
+        Project project = mongoOperations.findOne(query, Project.class);
+        if (project != null && project.getUserIds() != null) {
+            Query userQuery = new Query(Criteria.where("userId").in(project.getUserIds()));
+            return mongoOperations.find(userQuery, User.class);
+        }
+        return new ArrayList<>();
     }
-    return new ArrayList<>();  
-}
 
 }

@@ -43,7 +43,8 @@ public class ProjectService {
         //denna ska endast lista de projekt som finns under en user
     }
 
-    public Project createProjects(Project project) {
+    public Project createProjects(Project project, String user) {
+        project.addUserIds(user);
         return mongoOperations.insert(project);
     }
 

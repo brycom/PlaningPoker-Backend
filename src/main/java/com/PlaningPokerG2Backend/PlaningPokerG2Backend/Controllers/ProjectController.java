@@ -40,13 +40,16 @@ public class ProjectController {
 
     @GetMapping("/projects")
     public List<Project> getProjects(@AuthenticationPrincipal Jwt jwt) {
+        System.out.println("Steg 1");
         String user = tokenService.getUserFromToken(jwt);
+        System.out.println(user);
         return projectService.getProjects(user);
     }
 
     @PostMapping("/project")
-    public Project createProject(@RequestBody Project project) {
-        return projectService.createProjects(project);
+    public Project createProject(@AuthenticationPrincipal Jwt jwt, @RequestBody Project project) {
+        String user = tokenService.getUserFromToken(jwt);
+        return projectService.createProjects(project, user);
     }
 
     @DeleteMapping("/project/{id}")

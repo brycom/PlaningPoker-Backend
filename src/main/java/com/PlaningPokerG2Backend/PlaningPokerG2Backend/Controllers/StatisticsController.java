@@ -10,7 +10,6 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.StatisticsService;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/statistics")

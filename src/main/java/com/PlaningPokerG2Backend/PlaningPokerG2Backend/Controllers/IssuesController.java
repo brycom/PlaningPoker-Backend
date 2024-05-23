@@ -47,10 +47,10 @@ public class IssuesController {
         }
     }
 
-    @GetMapping("/{prjectId}")
-    public ResponseEntity<List<Issue>> getIssues(@PathVariable String prjectId) {
+    @GetMapping("/{projectId}")
+    public ResponseEntity<List<Issue>> getIssues(@PathVariable String projectId) {
         try {
-            List<Issue> issues = issuesService.getIssues(prjectId);
+            List<Issue> issues = issuesService.getIssues(projectId);
             return new ResponseEntity<>(issues, HttpStatus.OK);
         } catch (Exception ex) {
 

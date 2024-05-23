@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
@@ -61,7 +60,7 @@ public class ProjectController {
         if (users == null || users.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(users);  
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/projects/addUser")
@@ -83,7 +82,7 @@ public class ProjectController {
         if (updatedProject == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedProject); 
+        return ResponseEntity.ok(updatedProject);
     }
 
 }

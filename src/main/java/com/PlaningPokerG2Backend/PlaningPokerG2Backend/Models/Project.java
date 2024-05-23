@@ -12,7 +12,7 @@ public class Project {
     private String projektId;
     private String projectname;
     private List<String> userIds;
-    private List<Issues> issues;
+    private List<Issue> issues;
     private boolean active;
 
     //Skapar listorna direkt i konstruktorn istället för att ta in som input.
@@ -21,7 +21,7 @@ public class Project {
         this.projektId = projektId;
         this.projectname = projectname;
         this.userIds = new ArrayList<String>();
-        this.issues = new ArrayList<Issues>();
+        this.issues = new ArrayList<Issue>();
         this.active = active;
     }
 
@@ -49,11 +49,11 @@ public class Project {
         this.userIds.add(userIds);
     }
 
-    public List<Issues> getIssues() {
+    public List<Issue> getIssues() {
         return issues;
     }
 
-    public void addIssues(Issues issues) {
+    public void addIssues(Issue issues) {
         this.issues.add(issues);
     }
 

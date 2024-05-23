@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issues;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.User;
 
@@ -25,8 +25,8 @@ public class AdminService {
         return mongoOperations.findAll(Project.class);
     }
 
-    public List<Issues> getIssues() {
-        return mongoOperations.findAll(Issues.class);
+    public List<Issue> getIssues() {
+        return mongoOperations.findAll(Issue.class);
     }
 
     public User addUser(User user) {

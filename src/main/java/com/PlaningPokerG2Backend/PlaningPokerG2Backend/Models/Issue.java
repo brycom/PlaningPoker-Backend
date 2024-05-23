@@ -19,6 +19,7 @@ public class Issue {
     private float estimatedTime;
     private String actualTime;
 
+    //Lista för votes görs i konstrukton istället för input
     public Issue(String issuename, LocalDateTime startTime, LocalDateTime endTime,
             float estimatedTime, String actualTime) {
 

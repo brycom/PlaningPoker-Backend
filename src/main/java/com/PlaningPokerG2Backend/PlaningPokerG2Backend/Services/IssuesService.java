@@ -72,10 +72,6 @@ public class IssuesService {
             throw new NameNotFoundException("Projekt finns inte");
         }
         List<Issue> issues = project.getIssues();
-        if (issues.size() <= 1) {
-            throw new IllegalArgumentException("Du måste ha minst ett issue");
-
-        }
         issues.removeIf(is -> is.getIssueId().equals(issueId));
         mongoOperations.save(project);
 

@@ -94,8 +94,9 @@ public ResponseEntity<?> updateIssue(@RequestBody Issue issues, @PathVariable St
     ResponseEntity<String> closeIssue(@PathVariable String issueId, @PathVariable String projectId) {
         try {
             Issue closedIssue = issuesService.closeIssue(projectId, issueId);
+            String actualTime = closedIssue.getActualTime();
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Issue med namn:" + closedIssue.getIssuename() + " stängd.");
+                    .body(actualTime);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Stängning a issue misslyckades");
         }

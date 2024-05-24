@@ -33,15 +33,9 @@ public class VoteController {
     }
 
     @PostMapping("/uservote/{projectId}/{issueId}")
-    public List<Vote> addUserVotes(@RequestBody List<Vote> votes, @PathVariable String projectId,
-            @PathVariable String issueId) {
-        System.out.println("Received votes: " + votes + " for project: " + projectId + " and issue: " + issueId);
-
-        for (Vote vote : votes) {
-            voteService.addUserVote(vote, projectId, issueId);
-        }
-
-        return votes;
+    public Vote addUserVote(@RequestBody Vote vote, @PathVariable String projectId, @PathVariable String issueId) {
+        voteService.addUserVote(vote, projectId, issueId);
+        return vote;
     }
 
     @DeleteMapping("/deletevotes/{projectId}/{issueId}")

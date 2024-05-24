@@ -29,24 +29,35 @@ public class IssuesService {
         return mongoOperations.find(query, Issue.class).isEmpty();
     }
 
-    public Issue addIssue(String projektId, Issue issue) throws Exception {
-        Project projekt = mongoOperations.findById(projektId, Project.class);
-        if (projekt == null) {
+    public Issue addIssue(String user, String projectId, Issue issue) throws Exception {
+        Project project = mongoOperations.findById(projectId, Project.class);
+        if (project == null) {
             throw new NameNotFoundException("Projekt finns inte");
         }
-        for (Issue i : projekt.getIssues()) {
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
+        for (Issue i : project.getIssues()) {
             if (!isIssueNameUnique(i.getIssuename())) {
                 throw new Exception("Issuename finns redan");
             }
 
         }
-        projekt.addIssues(issue);
-        mongoOperations.save(projekt);
+        project.addIssues(issue);
+        mongoOperations.save(project);
         return issue;
     }
 
-    public List<Issue> getIssues(String projectId) throws Exception {
-        List<Issue> issues = mongoOperations.findById(projectId, Project.class).getIssues();
+    public List<Issue> getIssues(String user, String projectId) throws Exception {
+        Project project = mongoOperations.findById(projectId, Project.class);
+        if (project == null) {
+            throw new NameNotFoundException("Projekt finns inte");
+        }
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+
+        }
+        List<Issue> issues = project.getIssues();
 
         if (issues == null) {
             throw new NameNotFoundException("Projekt finns inte");
@@ -62,14 +73,29 @@ public class IssuesService {
         return existingIssue;
     }
 
-    public Issue updateIssue(Issue updatedIssue) {
-        return mongoOperations.save(updatedIssue);
+    public Issue updateIssue(String user, String projectId, String issueId, Issue newIssue) throws Exception {
+        Project project = mongoOperations.findById(projectId, Project.class);
+        if (project.getUserIds().contains(user)) {
+            Issue issue = project.getIssues().stream().filter(is -> is.getIssueId().equals(issueId)).findFirst()
+                    .orElseThrow(() -> new Exception("issuet fins inte"));
+            if ((!issue.getIssuename().equals(newIssue.getIssuename()) && newIssue.getIssuename() != null)) {
+                issue.setIssuename(newIssue.getIssuename());
+            }
+            mongoOperations.save(project);
+
+        }
+
+        return newIssue;
     }
 
-    public void deleteIssue(String projectId, String issueId) throws Exception {
+    public void deleteIssue(String user, String projectId, String issueId) throws Exception {
         Project project = mongoOperations.findById(projectId, Project.class);
         if (project == null) {
             throw new NameNotFoundException("Projekt finns inte");
+        }
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+
         }
         List<Issue> issues = project.getIssues();
         issues.removeIf(is -> is.getIssueId().equals(issueId));
@@ -77,10 +103,14 @@ public class IssuesService {
 
     }
 
-    public Issue closeIssue(String projectId, String issueId) throws Exception {
+    public Issue closeIssue(String user, String projectId, String issueId) throws Exception {
         Project project = mongoOperations.findById(projectId, Project.class);
         if (project == null) {
             throw new IllegalArgumentException("Projekt finns inte");
+        }
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+
         }
         Issue issue = project.getIssues().stream().filter(is -> is.getIssueId().equals(issueId)).findFirst()
                 .orElseThrow(() -> new Exception("issuet fins inte"));

@@ -48,21 +48,33 @@ public class ProjectService {
         return mongoOperations.insert(project);
     }
 
-    public void deleteProject(String projektId) {
+    public void deleteProject(String user, String projektId) {
+        Project project = mongoOperations.findById(projektId, Project.class);
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
         Query query = Query.query(Criteria.where("projektId").is(projektId));
 
         mongoOperations.remove(query, Project.class);
     }
 
-    public Project editProjects(String projektId, Project project) {
+    public Project editProjects(String user, String projektId, Project newProject) {
+        Project project = mongoOperations.findById(projektId, Project.class);
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
         Query query = Query.query(Criteria.where("projektId").is(projektId));
-        Update update = Update.update("projectname", project.getProjectname());
+        Update update = Update.update("projectname", newProject.getProjectname());
 
         mongoOperations.updateFirst(query, update, Project.class);
         return mongoOperations.findById(projektId, Project.class);
     }
 
-    public Project addUserToProject(String projektId, String userId) {
+    public Project addUserToProject(String user, String projektId, String userId) {
+        Project project = mongoOperations.findById(projektId, Project.class);
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
         Query query = new Query(Criteria.where("ProjektId").is(projektId));
         Update update = new Update().addToSet("userIds", userId);
         mongoOperations.updateFirst(query, update, Project.class);
@@ -72,7 +84,11 @@ public class ProjectService {
         //Behöver kollas över när vi ändrar projectId och userId
     }
 
-    public Project deleteUserFromProject(String projektId, String userId) {
+    public Project deleteUserFromProject(String user, String projektId, String userId) {
+        Project project = mongoOperations.findById(projektId, Project.class);
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
         Query query = new Query(Criteria.where("projektId").is(projektId));
         Update update = new Update().pull("userIds", userId); // Tar bort användar-ID från listan
         mongoOperations.updateFirst(query, update, Project.class); // Uppdaterar projektet
@@ -81,9 +97,12 @@ public class ProjectService {
         //Behöver kollas över när vi ändrar projectId och userId
     }
 
-    public List<User> getUsersInProject(String projektId) {
+    public List<User> getUsersInProject(String user, String projektId) {
         Query query = new Query(Criteria.where("projektId").is(projektId));
         Project project = mongoOperations.findOne(query, Project.class);
+        if (!project.getUserIds().contains(user)) {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
+        }
         if (project != null && project.getUserIds() != null) {
             Query userQuery = new Query(Criteria.where("userId").in(project.getUserIds()));
             return mongoOperations.find(userQuery, User.class);

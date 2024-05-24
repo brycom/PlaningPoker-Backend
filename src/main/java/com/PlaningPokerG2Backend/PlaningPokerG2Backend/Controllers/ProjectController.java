@@ -53,20 +53,25 @@ public class ProjectController {
     }
 
     @DeleteMapping("/project/{id}")
-    public String deleteProject(@PathVariable String id) {
-
-        projectService.deleteProject(id);
+    public String deleteProject(@AuthenticationPrincipal Jwt jwt, @PathVariable String id) {
+        String user = tokenService.getUserFromToken(jwt);
+        projectService.deleteProject(user, id);
         return "Deleted: " + id;
     }
 
     @PatchMapping("/project/{id}")
-    public Project editProject(@PathVariable String id, @RequestBody Project project) {
-        return projectService.editProjects(id, project);
+    public Project editProject(@AuthenticationPrincipal Jwt jwt, @PathVariable String id,
+            @RequestBody Project project) {
+        String user = tokenService.getUserFromToken(jwt);
+        return projectService.editProjects(user, id, project);
     }
 
+    //retunerar hela usern och inte DTOn!!!!!!
     @GetMapping("/{projectId}/users")
-    public ResponseEntity<List<User>> getUsersInProject(@PathVariable String projectId) {
-        List<User> users = projectService.getUsersInProject(projectId);
+    public ResponseEntity<List<User>> getUsersInProject(@AuthenticationPrincipal Jwt jwt,
+            @PathVariable String projectId) {
+        String user = tokenService.getUserFromToken(jwt);
+        List<User> users = projectService.getUsersInProject(user, projectId);
         if (users == null || users.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -74,10 +79,12 @@ public class ProjectController {
     }
 
     @PostMapping("/projects/addUser")
-    public ResponseEntity<Project> addUserToProject(@RequestBody Map<String, String> requestData) {
+    public ResponseEntity<Project> addUserToProject(@AuthenticationPrincipal Jwt jwt,
+            @RequestBody Map<String, String> requestData) {
+        String user = tokenService.getUserFromToken(jwt);
         String projectId = requestData.get("projektId");
         String userId = requestData.get("userId");
-        Project updatedProject = projectService.addUserToProject(projectId, userId);
+        Project updatedProject = projectService.addUserToProject(user, projectId, userId);
         if (updatedProject == null) {
             return ResponseEntity.notFound().build();
         }
@@ -85,10 +92,12 @@ public class ProjectController {
     }
 
     @DeleteMapping("/projects/deleteUser")
-    public ResponseEntity<Project> deleteUserFromProject(@RequestBody Map<String, String> requestData) {
+    public ResponseEntity<Project> deleteUserFromProject(@AuthenticationPrincipal Jwt jwt,
+            @RequestBody Map<String, String> requestData) {
+        String user = tokenService.getUserFromToken(jwt);
         String projectId = requestData.get("projektId");
         String userId = requestData.get("userId");
-        Project updatedProject = projectService.deleteUserFromProject(projectId, userId);
+        Project updatedProject = projectService.deleteUserFromProject(user, projectId, userId);
         if (updatedProject == null) {
             return ResponseEntity.notFound().build();
         }

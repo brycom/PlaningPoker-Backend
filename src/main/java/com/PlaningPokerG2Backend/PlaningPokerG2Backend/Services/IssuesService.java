@@ -80,12 +80,14 @@ public class IssuesService {
                     .orElseThrow(() -> new Exception("issuet fins inte"));
             if ((!issue.getIssuename().equals(newIssue.getIssuename()) && newIssue.getIssuename() != null)) {
                 issue.setIssuename(newIssue.getIssuename());
+                mongoOperations.save(project);
             }
-            mongoOperations.save(project);
 
+        } else {
+            throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
         }
-
         return newIssue;
+
     }
 
     public void deleteIssue(String user, String projectId, String issueId) throws Exception {

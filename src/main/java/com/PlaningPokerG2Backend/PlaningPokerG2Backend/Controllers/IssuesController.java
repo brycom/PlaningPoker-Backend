@@ -73,7 +73,7 @@ public class IssuesController {
 
             return ResponseEntity.ok(issuesService.updateIssue(user, projectId, issueId, issues));
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Uppdatering av issue misslyckades");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 

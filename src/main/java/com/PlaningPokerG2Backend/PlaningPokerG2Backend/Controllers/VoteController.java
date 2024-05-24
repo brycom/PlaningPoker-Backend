@@ -53,4 +53,10 @@ public class VoteController {
         return voteService.getUserVote(projectId, issueId, userId);
     }
 
+    @GetMapping("/averagevote/{projectId}/{issueId}")
+    public Double getAverageVote(@PathVariable String projectId, @PathVariable String issueId) {
+
+        Double averageVote = voteService.getAverageVote(projectId, issueId);
+        return averageVote;
+    }
 }

@@ -2,7 +2,6 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Controllers;
 
 import java.util.List;
 
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +19,9 @@ import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services.VoteService;
 @RequestMapping("/vote")
 public class VoteController {
 
-    
-
     private VoteService voteService;
 
-    public VoteController(VoteService voteService) {  
+    public VoteController(VoteService voteService) {
         this.voteService = voteService;
     }
 
@@ -36,10 +33,15 @@ public class VoteController {
     }
 
     @PostMapping("/uservote/{projectId}/{issueId}")
-    public Vote addUserVote(@RequestBody Vote vote, @PathVariable String projectId, @PathVariable String issueId) {
-        System.out.println("Detta händer: " + vote + projectId + issueId);
-        voteService.addUserVote(vote, projectId, issueId);
-        return vote;
+    public List<Vote> addUserVotes(@RequestBody List<Vote> votes, @PathVariable String projectId,
+            @PathVariable String issueId) {
+        System.out.println("Received votes: " + votes + " for project: " + projectId + " and issue: " + issueId);
+
+        for (Vote vote : votes) {
+            voteService.addUserVote(vote, projectId, issueId);
+        }
+
+        return votes;
     }
 
     @DeleteMapping("/deletevotes/{projectId}/{issueId}")

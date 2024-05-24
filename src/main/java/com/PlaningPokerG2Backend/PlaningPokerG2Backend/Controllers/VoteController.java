@@ -37,6 +37,7 @@ public class VoteController {
 
     @PostMapping("/uservote/{projectId}/{issueId}")
     public Vote addUserVote(@RequestBody Vote vote, @PathVariable String projectId, @PathVariable String issueId) {
+        System.out.println("Detta händer: " + vote + projectId + issueId);
         voteService.addUserVote(vote, projectId, issueId);
         return vote;
     }

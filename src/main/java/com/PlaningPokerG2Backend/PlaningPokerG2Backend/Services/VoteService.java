@@ -117,4 +117,41 @@ public class VoteService {
         System.out.println("Issue not found");
         return null;
     }
+
+    public Double getAverageVote(String projectId, String issueId) {
+        System.out.println("Project ID: " + projectId);
+        System.out.println("Issue ID: " + issueId);
+    
+        Project project = mongoOperations.findById(projectId, Project.class);
+    
+        if (project == null) {
+            System.out.println("Project not found");
+            return null;
+        }
+    
+        List<Issue> allIssues = project.getIssues();
+        System.out.println("allIssues: " + allIssues);
+    
+        for (Issue issue : allIssues) {
+            if (issue.getIssueId().equals(issueId)) {
+                List<Vote> votes = issue.getVotes();
+                System.out.println("Votes: " + votes);
+    
+                if (votes == null || votes.isEmpty()) {
+                    System.out.println("No votes found");
+                    return 0.0;
+                }
+    
+                double totalVotes = votes.size();
+                double sumOfVotes = votes.stream().mapToDouble(Vote::getVote).sum();
+    
+                double averageVotes = sumOfVotes / totalVotes;
+                double roundedAverageVotes = Math.round(averageVotes * 2) / 2.0;
+                return roundedAverageVotes;
+            }
+        }
+    
+        System.out.println("Issue not found");
+        return null;
+    }
 }

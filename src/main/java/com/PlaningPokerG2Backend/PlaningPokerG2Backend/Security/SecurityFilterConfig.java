@@ -20,7 +20,7 @@ public class SecurityFilterConfig {
                                 .authorizeHttpRequests(auth -> {
                                         auth.requestMatchers("/auth/**").permitAll();
                                         auth.requestMatchers("/admin/**", "/role/**").hasRole("admin");
-                                        auth.requestMatchers("/users/**", "/project/**", "/issue/**", "/statistics/**")
+                                        auth.requestMatchers("/users/**", "/project/**", "/issue/**", "/vote/**", "/statistics/**")
                                                         .hasAnyRole("admin",
                                                                         "user");
 

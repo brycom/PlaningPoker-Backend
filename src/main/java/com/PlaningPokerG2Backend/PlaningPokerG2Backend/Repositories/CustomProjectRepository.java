@@ -19,9 +19,6 @@ public class CustomProjectRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    @Autowired
-    private ProjectService projectService;
-
     public List<Vote> findVotesByIssueId(String projectId, String issueId) {
         System.out.println("Project ID: " + projectId);
         System.out.println("Issue ID: " + issueId);

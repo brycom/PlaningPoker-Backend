@@ -83,8 +83,8 @@ public class ProjectController {
             @RequestBody Map<String, String> requestData) {
         String user = tokenService.getUserFromToken(jwt);
         String projectId = requestData.get("projektId");
-        String userId = requestData.get("userId");
-        Project updatedProject = projectService.addUserToProject(user, projectId, userId);
+        String username = requestData.get("username");
+        Project updatedProject = projectService.addUserToProject(user, projectId, username);
         if (updatedProject == null) {
             return ResponseEntity.notFound().build();
         }

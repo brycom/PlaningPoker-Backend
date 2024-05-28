@@ -70,11 +70,13 @@ public class ProjectService {
         return mongoOperations.findById(projektId, Project.class);
     }
 
-    public Project addUserToProject(String user, String projektId, String userId) {
+    public Project addUserToProject(String user, String projektId, String username) {
         Project project = mongoOperations.findById(projektId, Project.class);
         if (!project.getUserIds().contains(user)) {
             throw new IllegalArgumentException("Du har inte tillgång till detta projekt");
         }
+        Query q = Query.query(Criteria.where("username").is(username));
+        String userId = mongoOperations.findOne(q, User.class).getUserId();
         Query query = new Query(Criteria.where("ProjektId").is(projektId));
         Update update = new Update().addToSet("userIds", userId);
         mongoOperations.updateFirst(query, update, Project.class);

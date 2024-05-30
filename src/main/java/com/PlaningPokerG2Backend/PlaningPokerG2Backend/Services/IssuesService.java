@@ -2,6 +2,7 @@ package com.PlaningPokerG2Backend.PlaningPokerG2Backend.Services;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NameNotFoundException;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Issue;
 import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Project;
+import com.PlaningPokerG2Backend.PlaningPokerG2Backend.Models.Vote;
 
 @Service
 public class IssuesService {
@@ -48,6 +50,7 @@ public class IssuesService {
 
     public List<Issue> getIssues(String user, String projectId) throws Exception {
         Project project = mongoOperations.findById(projectId, Project.class);
+        System.out.println("issues");
         if (project == null) {
             throw new NameNotFoundException("Projekt finns inte");
         }
@@ -56,10 +59,23 @@ public class IssuesService {
 
         }
         List<Issue> issues = project.getIssues();
+        
 
         if (issues == null) {
             throw new NameNotFoundException("Projekt finns inte");
 
+        }
+        
+
+        for (Issue issue : issues) {
+            List<Vote> votes = issue.getVotes();
+            float number = 0;
+            for (Vote vote : votes) {
+                number+= vote.getVote();
+            }
+            float average = number/votes.size();
+            issue.setEstimatedTime(average);
+            System.out.println("honkitonk"+average+" size: "+ issues.size());
         }
 
         return issues;
